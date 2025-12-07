@@ -122,12 +122,10 @@
             width: 100%;
             max-width: var(--page-width);
             min-height: 95vh;
-            /* Eliminamos height: auto para evitar conflictos, usamos min-height */
             padding: 70px 80px;
             box-shadow: 0 0 25px rgba(0,0,0,0.4);
             margin-bottom: 80px;
             position: relative;
-            /* Importante para contener elementos */
             display: block; 
         }
 
@@ -205,13 +203,25 @@
             color: #555;
         }
 
+        .page-marker {
+            display: block;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            font-family: var(--font-ui);
+            margin: 40px 0;
+            border-top: 1px dashed #d0d0d0;
+            padding-top: 10px;
+            user-select: none;
+        }
+
         .footnotes {
             margin-top: 60px;
             padding-top: 20px;
             border-top: 1px solid #ccc;
             font-size: 0.85em;
             color: #444;
-            background-color: rgba(0,0,0,0.02); /* Slight background to distinguish */
+            background-color: rgba(0,0,0,0.02);
             padding: 20px;
             border-radius: 4px;
         }
@@ -320,6 +330,7 @@
         body.dark-mode h3 { color: #bbb; }
         body.dark-mode blockquote { color: #aaa; border-left-color: #555; }
         body.dark-mode .dedication { color: #888; }
+        body.dark-mode .page-marker { color: #666; border-top-color: #444; }
         body.dark-mode .footnotes { color: #888; border-top-color: #444; background-color: rgba(255,255,255,0.05); }
         body.dark-mode .dialogue { color: #ccc; border-left-color: #555; }
     </style>
@@ -387,6 +398,8 @@
 
                     <p>En el psicoanálisis tal como se constituyó al comienzo, la infancia sólo figuraba (en lo que de ella informaban los adultos) como recuerdos reprimidos. No se trataba tanto de un pasado real como de la manera en que el sujeto lo sitúa dentro de cierta perspectiva: al reconstruir su infancia, el sujeto reordena un pasado de acuerdo con su deseo. Lo mismo sucede con el niño pequeño que, en su juego reordena su mundo presente o pasado de acuerdo con lo que quiere. Es entonces cuando surge su decir que apunta a un adulto imaginario o real (incluso a un imaginario compañero). El discurso que tiene lugar en psicoanálisis, en el caso del niño y en el adulto, nos remite pues no tanto a una realidad como a un mundo de deseos y de ensoñaciones.</p>
                     
+                    <span class="page-marker">Página 3</span>
+
                     <p>Esta verdad fue perdida de vista, desde 1918, por la primera analista que se ocupó de niños (Hug Hellmuth), y de este modo desde sus comienzos el análisis se desarrolló en dos direcciones opuestas: en una de ellas los descubrimientos de Freud se mantienen por completo (sobre todo el Edipo y la transferencia); en la otra, se produce un alejamiento de tales descubrimientos con el fin de modificar una realidad: el niño se convierte en el soporte de las buenas intenciones que los adultos alimentan con respecto a él.</p>
 
                     <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker (3), quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo.</p>
