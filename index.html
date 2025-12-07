@@ -12,7 +12,11 @@
             --sidebar-bg: #f4e4d0;
             --font-main: "Merriweather", "Georgia", serif;
             --font-ui: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --page-width: 750px;
+            --page-width: 800px;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -21,7 +25,7 @@
             font-family: var(--font-main);
             margin: 0;
             padding: 0;
-            line-height: 1.9;
+            line-height: 1.8;
             font-size: 19px;
             height: 100vh;
             overflow: hidden;
@@ -35,7 +39,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 320px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid #c9bda8;
             display: flex;
@@ -43,6 +47,7 @@
             transition: transform 0.3s ease;
             z-index: 1000;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .sidebar-header {
@@ -54,7 +59,7 @@
         .sidebar-header h2 {
             margin: 0;
             font-family: var(--font-ui);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--accent-color);
             font-weight: 700;
         }
@@ -76,15 +81,16 @@
             text-align: left;
             background: none;
             border: none;
-            padding: 14px 18px;
+            padding: 12px 15px;
             cursor: pointer;
             font-family: var(--font-ui);
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #5d4037;
-            border-radius: 8px;
-            margin-bottom: 5px;
+            border-radius: 6px;
+            margin-bottom: 4px;
             transition: all 0.2s;
             border-left: 4px solid transparent;
+            line-height: 1.3;
         }
 
         .chapter-btn:hover {
@@ -116,76 +122,110 @@
             width: 100%;
             max-width: var(--page-width);
             min-height: 95vh;
+            /* Eliminamos height: auto para evitar conflictos, usamos min-height */
             padding: 70px 80px;
             box-shadow: 0 0 25px rgba(0,0,0,0.4);
-            margin-bottom: 40px;
+            margin-bottom: 80px;
             position: relative;
+            /* Importante para contener elementos */
+            display: block; 
         }
 
         /* Typography */
         h1.book-title {
             text-align: center;
-            font-size: 3em;
-            margin-top: 60px;
-            margin-bottom: 30px;
+            font-size: 2.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
             color: #222;
             letter-spacing: -1px;
+            line-height: 1.1;
         }
 
         h2.book-author {
             text-align: center;
-            font-size: 1.6em;
+            font-size: 1.4em;
             color: #666;
             font-weight: 300;
             font-style: italic;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         h2.chapter-title {
-            font-size: 2.4em;
+            font-size: 2.2em;
             color: var(--accent-color);
             border-bottom: 3px double #dcc;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             margin-top: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             line-height: 1.2;
         }
 
         h3 {
-            font-size: 1.5em;
-            margin-top: 50px;
-            margin-bottom: 20px;
+            font-size: 1.4em;
+            margin-top: 40px;
+            margin-bottom: 15px;
             color: #4a4a4a;
             font-family: var(--font-ui);
             font-weight: 600;
         }
+        
+        h4 {
+            font-size: 1.1em;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #5d4037;
+            font-weight: bold;
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
         p {
-            margin-bottom: 1.6em;
+            margin-bottom: 1.5em;
             text-align: justify;
             text-justify: inter-word;
             hyphens: auto;
         }
 
+        blockquote {
+            margin: 20px 40px;
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #dcc;
+            padding-left: 15px;
+        }
+
         .dedication {
             text-align: right;
             font-style: italic;
-            margin-top: 120px;
+            margin-top: 100px;
             margin-right: 40px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #555;
         }
 
-        .page-marker {
-            display: block;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #a0a0a0;
-            font-family: var(--font-ui);
-            margin: 40px 0;
-            border-top: 1px dashed #d0d0d0;
-            padding-top: 10px;
-            user-select: none;
+        .footnotes {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            font-size: 0.85em;
+            color: #444;
+            background-color: rgba(0,0,0,0.02); /* Slight background to distinguish */
+            padding: 20px;
+            border-radius: 4px;
+        }
+        
+        .footnotes p {
+            margin-bottom: 0.8em;
+        }
+
+        .dialogue {
+            margin-left: 20px;
+            color: #333;
+            border-left: 2px solid #e0d0b8;
+            padding-left: 15px;
+            font-style: italic;
         }
 
         /* Controls */
@@ -194,18 +234,18 @@
             bottom: 30px;
             right: 30px;
             background: rgba(255,255,255,0.95);
-            padding: 12px;
+            padding: 10px;
             border-radius: 50px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.15);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             z-index: 2000;
             backdrop-filter: blur(5px);
         }
 
         .control-btn {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 1px solid #eee;
             background: white;
@@ -213,7 +253,7 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             font-family: var(--font-ui);
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -235,12 +275,12 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 18px;
-            border-radius: 8px;
+            padding: 10px 15px;
+            border-radius: 6px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             font-family: var(--font-ui);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         /* Mobile */
@@ -253,9 +293,9 @@
             }
             .sidebar.open { transform: translateX(0); }
             .menu-toggle { display: block; }
-            .book-page { padding: 50px 30px; }
+            .book-page { padding: 40px 25px; }
             .reader-area { padding: 0; background-color: var(--bg-color); }
-            h1.book-title { font-size: 2.2em; }
+            h1.book-title { font-size: 2em; }
         }
 
         /* Dark Mode */
@@ -278,6 +318,10 @@
         }
         body.dark-mode h2.chapter-title { color: #cdb38b; border-bottom-color: #444; }
         body.dark-mode h3 { color: #bbb; }
+        body.dark-mode blockquote { color: #aaa; border-left-color: #555; }
+        body.dark-mode .dedication { color: #888; }
+        body.dark-mode .footnotes { color: #888; border-top-color: #444; background-color: rgba(255,255,255,0.05); }
+        body.dark-mode .dialogue { color: #ccc; border-left-color: #555; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -310,10 +354,9 @@
         const bookData = [
             {
                 id: "portada",
-                title: "Portada e Introducción",
+                title: "Portada y Agradecimientos",
                 content: `
-                    <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                        <span class="page-marker">Página 1</span>
+                    <div style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
                         <h1 class="book-title">El niño, su "enfermedad" y los otros</h1>
                         <h2 class="book-author">Maud Mannoni</h2>
                         <div style="text-align: center; margin-top: 20px; font-weight: bold; font-family: var(--font-ui); color: #888;">PRIMER TOMO</div>
@@ -333,167 +376,277 @@
             },
             {
                 id: "prefacio",
-                title: "Prefacio",
+                title: "Prefacio: El psicoanálisis de niños",
                 content: `
-                    <span class="page-marker">Página 2</span>
                     <h2 class="chapter-title">Prefacio</h2>
                     <h3>El psicoanálisis de niños a partir de Freud</h3>
                     
-                    <p>El psicoanálisis de niños es psicoanálisis. Tal la convicción de Freud al ocuparse en 1909 de la cura de un niño de cinco años afectado por una neurosis fóbica. La adaptación de la técnica a la situación particular que representa para el adulto el aproximarse a un niño, no altera el campo sobre el cual opera el analista: ese campo es el del lenguaje (incluso cuando el niño todavía no habla). El discurso que rige abarca a los padres, al niño y al analista: se trata de un discurso colectivo constituido alrededor del síntoma que el niño presenta.</p>
+                    <p>El psicoanálisis de niños es psicoanálisis. Tal la convicción de Freud al ocuparse en 1909 (1) de la cura de un niño de cinco años afectado por una neurosis fóbica. La adaptación de la técnica a la situación particular que representa para el adulto el aproximarse a un niño, no altera el campo sobre el cual opera el analista: ese campo es el del lenguaje (incluso cuando el niño todavía no habla). El discurso que rige abarca a los padres, al niño y al analista: se trata de un discurso colectivo constituido alrededor del síntoma que el niño presenta.</p>
                     
                     <p>El malestar de que se habla es objetivable (en la persona del niño) pero la queja de los padres, aunque su objeto sea el niño real, también implica la representación que de la infancia tiene el adulto. La sociedad le confiere al niño un status puesto que le encomienda, sin que él lo sepa, la realización del futuro del adulto: la misión del niño consiste en reparar el fracaso de los padres, e incluso en concretar sus sueños perdidos. De este modo, las quejas de los padres con respecto a su descendencia nos remiten ante todo a la problemática propia del adulto. Tales características vuelven a encontrarse cuando, en el análisis, el adulto nos habla de su pasado. Lo que nos expone no es tanto una realidad vivida como un sueño frustrado.</p>
 
                     <p>En el psicoanálisis tal como se constituyó al comienzo, la infancia sólo figuraba (en lo que de ella informaban los adultos) como recuerdos reprimidos. No se trataba tanto de un pasado real como de la manera en que el sujeto lo sitúa dentro de cierta perspectiva: al reconstruir su infancia, el sujeto reordena un pasado de acuerdo con su deseo. Lo mismo sucede con el niño pequeño que, en su juego reordena su mundo presente o pasado de acuerdo con lo que quiere. Es entonces cuando surge su decir que apunta a un adulto imaginario o real (incluso a un imaginario compañero). El discurso que tiene lugar en psicoanálisis, en el caso del niño y en el adulto, nos remite pues no tanto a una realidad como a un mundo de deseos y de ensoñaciones.</p>
                     
-                    <span class="page-marker">Página 3</span>
                     <p>Esta verdad fue perdida de vista, desde 1918, por la primera analista que se ocupó de niños (Hug Hellmuth), y de este modo desde sus comienzos el análisis se desarrolló en dos direcciones opuestas: en una de ellas los descubrimientos de Freud se mantienen por completo (sobre todo el Edipo y la transferencia); en la otra, se produce un alejamiento de tales descubrimientos con el fin de modificar una realidad: el niño se convierte en el soporte de las buenas intenciones que los adultos alimentan con respecto a él.</p>
 
-                    <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker, quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo.</p>
+                    <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker (3), quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo.</p>
                     
                     <p>Tal actitud (que, con modalidades diferentes, podríamos encontrar también en la actualidad) llevó a Freud a denunciar el peligro de la "falsa ciencia" contraria a toda genuina investigación. En su tesis Debacker planteaba un diagnóstico, el de anemia cerebral (ésta había sido la causa de las alucinaciones demoníacas del niño): ese diagnóstico no tenía mayor relación con la historia clínica del enfermo (estado fóbico y terrores nocturnos de un muchacho de 13 años). En su informe el autor no había tomado en cuenta las palabras del sujeto, aunque estaban presentes en su observación.</p>
                     
-                    <p>Alguien que no estuviese iniciado -nos dice Freud- se habría desempeñado mejor: habría retenido las palabras del niño presa de una intensa angustia persecutoria. Alberto dio la clave del desorden somático el día en que estuvo curado, y esa curación sobrevino en el momento en que el niño pudo verbalizar el sentido de su enfermedad, es decir designar con palabras aquello que el síntoma tenía la misión de encubrir. Por el rodeo de las acusaciones alucinatorias (los diablos), el niño, a través de sus terrores, hablaba de su padre y de los problemas sexuales que se planteaban en la realidad con motivo de su pubertad.</p>
+                    <p>Alguien que no estuviese iniciado -nos dice Freud- se habría desempeñado mejor: habría retenido las palabras del niño presa de una intensa angustia persecutoria. Alberto dio la clave del desorden somático el día en que estuvo curado, y esa curación sobrevino en el momento en que el niño pudo verbalizar el sentido de su enfermedad, es decir designar con palabras aquello que el síntoma tenía la misión de encubrir. Por el rodeo de las acusaciones alucinatorias pudo el niño hacer emerger la "palabra primera", a saber, la confesión (cargada de culpabilidad) de las actividades masturbatorias. Las palabras alucinadas o acusadores del delirio son generalmente palabras escuchadas pero olvidadas, que dejan su huella en el nivel del síntoma. En el análisis se llega a aislar la marca de las palabras (dichas o no dichas) sobre lo somático (4). En este caso el niño fue su propio médico.</p>
                     
                     <p>Fue necesario que Freud descubriera el psicoanálisis para que se le restituyera un sentido a lo que, para la ciencia oficial, carecía de él. La cuestión de saber quién, en el conflicto, detenta la verdad (si el niño o el adulto), se plantea todavía hoy, a pesar de los descubrimientos freudianos. Se plantea cada vez que un niño es llevado al analista; este último corre siempre el riesgo de buscar la verdad del lado de la realidad (la de los padres) y de desconocer esa otra verdad que surge de la palabra del niño. Al rechazar el sentido del síntoma (la verdad del sujeto) el analista se convierte entonces en el mejor aliado de la represión (la de los padres), cuando su misión consiste en levantarla.</p>
+
+                    <div class="footnotes">
+                        <h4>Notas</h4>
+                        <p>1. S. Freud, "Historia de la fobia de un niño de cinco años.</p>
+                        <p>2. Hug Hellmuth.</p>
+                        <p>3. Citado por Freud en "La interpretación de los sueños".</p>
+                        <p>4. Los lingüistas oponen la palabra (habla) al lenguaje o la lengua como la expresión "tomar palabra". Aquí ese término se toma en el sentido en que se trata de la palabra dicha o no dicha, que ha marcado -o cuya ausencia ha marcado- al sujeto oyente. Esta marca se vuelve a encontrar en el síntoma, ya sea éste psicológica o somático.</p>
+                        <p>5. Presupone que los efectos de los mecanismos de desplazamientos y de condensación aparecen en el discurso del sujeto en función de leyes precisas.</p>
+                        <p>6. S. Freud. "Historia del movimiento psicoanalítico".</p>
+                        <p>7. "Mucho de que tú hubiese nacido... Yo sabía", etc.</p>
+                        <p>8. Alrededor de significantes: el nombre del Padre, el falo, etc.</p>
+                        <p>9. Del deseo del padre de Juanito por Freud, y del interés teórico que su "caso" representa para las investigaciones de Freud.</p>
+                        <p>10. Al rechazar, en lo real, a su hijo, la madre refrendaba su imposibilidad de renunciar al objeto imaginario que constituía para ella su hijo en cuanto sustituto fálico.</p>
+                        <p>11. Deseo (Wunch, Wish). En la Traumdeutung, Freud distingue entre el deseo y la tendencia.</p>
+                        <p>12. Melanie Klein describe de qué manera el niño proyecta su agresión.</p>
+                        <p>13. Cf. G. Rosolato y Widlocher, "Karl Abraham".</p>
+                        <p>14. D. W. Winnicot, "Psychoanalisis and the Sense of Guilt".</p>
+                        <p>15. J. Lacan, seminario del 25 de enero de 1959.</p>
+                        <p>16. Ya antes de 1920 Biswanger fue el primero en introducir el psicoanálisis en la clínica psiquiátrica.</p>
+                        <p>17. R. Laing, The Self and Others.</p>
+                        <p>18. S. Freud, "Esquema del psicoanálisis".</p>
+                        <p>19. Erik H. Erikson, infancia y sociedad.</p>
+                        <p>20. Lacan aborda este problema como la relación del sujeto con el significante.</p>
+                        <p>21. S. Freud "El poeta y la fantasía".</p>
+                        <p>22. S. Freud. "Más allá del principio del placer".</p>
+                        <p>23. Cf. los trabajos de Adilf Woltamn en Child Psychotherapy.</p>
+                        <p>24. Dell Lebo, en Child Psychotherapy, p. 430.</p>
+                        <p>25. Adolf G. Woltmann, "Varietes of play tecniques".</p>
+                        <p>26. J. Lacan. cf. "Situation' de la Psychanalyse en 1950", Ecrits, p. 459.</p>
+                    </div>
                 `
             },
             {
-                id: "introduccion",
-                title: "Introducción",
+                id: "cap1",
+                title: "Capítulo 1: El síntoma o la palabra",
                 content: `
-                    <span class="page-marker">Página 4</span>
-                    <h2 class="chapter-title">Introducción</h2>
-                    
-                    <p>Hasta la llegada del psicoanálisis, el niño era esencialmente considerado como un objeto de cuidados o de educación. Con Freud, el niño deviene un sujeto con pleno derecho, un sujeto capaz de deseo y con un inconsciente estructurado como un lenguaje. Sin embargo, esta revolución no se impuso sin resistencias.</p>
-
-                    <p>Es notable constatar cómo, en la práctica clínica con niños, a menudo nos encontramos en una encrucijada difícil. Por un lado, tenemos la demanda de los padres, que vienen angustiados por un síntoma que molesta, que hace ruido, que interrumpe el orden familiar o escolar. "Mi hijo no aprende", "mi hijo se orina en la cama", "mi hijo es agresivo". Estas formulaciones colocan al niño en el lugar del "problema" a resolver, como una máquina averiada que hay que reparar.</p>
-
-                    <p>Por otro lado, está el niño. A veces mudo, a veces desafiante, a veces cómplice de ese lugar de enfermo que se le asigna. Nuestro trabajo comienza precisamente allí: en abrir una brecha en ese discurso cerrado. No se trata de "curar" el síntoma para complacer a los padres o a la escuela (lo que sería una ortopedia pedagógica), sino de permitir que el niño pueda articular algo de su propia verdad, que pueda subjetivar eso que le pasa.</p>
-
-                    <p>En este libro intentaremos recorrer este camino complejo. Veremos cómo el síntoma del niño no es un hecho aislado, sino que está anudado a la historia de los padres, a los no-dichos de la familia, a los fantasmas que circulan entre generaciones. El niño, a menudo, se hace cargo de la "enfermedad" de la familia; es el portador de la verdad reprimida del grupo.</p>
-
-                    <span class="page-marker">Página 5</span>
-                    <p>Abordaremos cuestiones cruciales: ¿Qué lugar ocupa el niño en el deseo de la madre? ¿Qué función cumple el padre (o su ausencia)? ¿Cómo intervenir en las psicosis infantiles, en la debilidad mental, en los trastornos del carácter? No ofreceremos recetas mágicas, sino una orientación basada en la escucha analítica, esa que, como decía Freud, debe ser capaz de oír lo que se dice más allá de las palabras.</p>
-                    
-                    <p>El "retrasado", el "loco", el "inadaptado", son etiquetas que fijan un destino. El psicoanálisis intenta devolver la movilidad a ese destino, reintroduciendo la dimensión del sujeto allí donde solo se veía un déficit o una anomalía orgánica. Es un desafío ético tanto como clínico.</p>
-                `
-            },
-            {
-                id: "parte1",
-                title: "Primera Parte: El Niño y el Discurso",
-                content: `
-                    <span class="page-marker">Página 7</span>
                     <h2 class="chapter-title">Primera Parte</h2>
-                    <h3>Situación del Psicoanálisis de Niños</h3>
+                    <blockquote>Hemos entendido, cuando formamos parte de lo que se nos dice.<br>Martin Heidegger.</blockquote>
                     
-                    <p>La primera dificultad que encontramos en el psicoanálisis de niños concierne al lugar que el niño ocupa en el discurso de quienes lo traen a la consulta. A diferencia del adulto que (generalmente) pide análisis por sí mismo, el niño es "traído". Es un objeto de intercambio, de preocupación, de queja, y a veces de rechazo, dentro de una trama familiar que lo precede.</p>
-
-                    <p>Cuando los padres cruzan el umbral del consultorio, traen consigo un "saber" sobre lo que le pasa al niño. "Es perezoso", "es malo", "no se concentra". Este saber actúa como una pantalla. Nuestro primer movimiento no debe ser confirmar ni desmentir ese saber, sino interrogarlo. ¿Qué verdad de la pareja parental se está jugando en el síntoma del niño?</p>
-
-                    <p>El niño, en su "enfermedad", a menudo está denunciando una mentira familiar. Se convierte en el portavoz mudo de un conflicto que los padres no pueden asumir. Por eso, el síntoma infantil tiene una estructura de lenguaje: está articulado como un mensaje dirigido al Otro (los padres), pero es un mensaje cifrado que nadie quiere oír.</p>
-
-                    <span class="page-marker">Página 8</span>
-                    <h3>El síntoma como verdad y como goce</h3>
+                    <h3>Capítulo 1: El síntoma o la palabra</h3>
                     
-                    <p>Tomemos el caso de una fobia escolar. Para la pedagogía, es un problema de adaptación o de disciplina. Para el psicoanálisis, la pregunta es otra: ¿Qué peligro representa para ese niño el saber? O mejor dicho, ¿qué lugar debe dejar vacío en la casa para poder ir a la escuela? A menudo descubrimos que la angustia del niño responde a la angustia de la madre; el niño no va a la escuela para quedarse a "cuidar" o "vigilar" algo en el hogar, para sostener a una madre depresiva o para llenar un vacío en la relación conyugal.</p>
+                    <h4>1.</h4>
+                    <p>Bajo el influjo del conductismo, la escuela norteamericana puso el acento sobre el juego conflictivo que opone el sujeto a su medio. ¿Acaso el síntoma neurótico tiene que ser comprendido en consecuencia como el resultado de tal juego entre el desarrollo del sujeto y su entorno? ¿Nos permite esta explicación penetrar en el sentido de aquello de que verdaderamente trata el análisis?</p>
 
-                    <p>El niño queda así atrapado en una posición de objeto. Su subjetividad está alienada en el deseo del Otro. La intervención del analista apunta a separar al niño de ese lugar asignado, a permitirle formular su propia demanda, distinta de la demanda de los padres. Esto no es fácil, porque a menudo el síntoma, aunque doloroso, proporciona una satisfacción sustitutiva (un goce) tanto al niño como a la familia. El equilibrio del grupo familiar puede depender, paradójicamente, de que el niño siga enfermo.</p>
+                    <p>Freud mostró la importancia de los primeros años de la vida en el ser humano. El niño tiene que pasar por conflictos que son necesarios par él. Son conflictos identificatorios y no conflictos con lo real; y si bien el mundo exterior es sentido por el niño alternativamente como benévolo o como hostil, sabemos con certeza que no se trata de una situación biológica o animal de "lucha por la vida" sino de una situación imaginaria que poco a poco tiene que llegar a simbolizarse (1). En sus relaciones con sus padres, el niño tiene que aprender a dejar una situación dual (de fascinación imaginaria) para introducirse en un orden ternario —es decir estructurar el Edipo, lo cual solo puede hacerse cuando entra el orden del lenguaje.</p>
 
-                    <p>En esta primera parte, exploraremos cómo el psicoanálisis opera en este terreno minado. No se trata de reeducar al niño para que encaje en las normas sociales (eso sería domesticación), sino de ofrecerle un espacio donde su palabra tenga valor de verdad. Un espacio donde pueda dejar de ser "el problema" para devenir un sujeto deseante.</p>
+                    <p>De este modo, la aportación de Freud reside ante todo en indicarnos que, en un análisis, no se trata de un individuo que se enfrenta con la realidad ni de su conducta, sino por el contrario, del desconocimiento imaginario del yo, es decir de la sucesivas formas de identificaciones, de engaños y de alienaciones que expresan una defensa frente al advenimiento de la verdad del sujeto.</p>
+
+                    <p>El psicoanálisis de niños no difiere en su espíritu (en su escucha) del psicoanálisis de adultos; pero al adulto, incluso tratándose de un psicoanálisis, cuando aborda los problemas de la infancia, a menudo se le interpone la idea (las proyecciones imaginarias) que se hace de ella. Todo estudio sobre la infancia implica al adulto, a sus reacciones y a sus prejuicios.</p>
+
+                    <p>Observaciones efectuadas por Francoise Dolto (2) en niños normales de 20 meses presas de una aguda tensión emocional por el nacimiento de un hermanito, nos muestran hasta qué punto el adulto forma parte del conflicto. Lo que demanda el niño desesperado es la palabra precisa, esa "palabra maestra" (3) que invoca en estado de crisis, para que a través de ella pueda conquistarse el dominio sobre algo. El niño reclama el derecho de comprender lo absurdo que le sucede en determinada reacción agresiva suya.</p>
+
+                    <h4>El caso de Juanito</h4>
+                    <p>En el célebre estudio de Freud sobre Juanito (4), lo que me interesa no es el análisis del caso sino los fragmentos de observación del padre, que ponen de manifiesto las pantallas que el adulto levanta para que el niño permanezca en cierto no-saber. La observación se inicia con una interrogación de Juanito dirigida a su madre: "Mamá, ¿tú también tienes una cosita para hacer pis?".</p>
+                    
+                    <p>La historia de Juanito es la de un niño enfrentado con el mito del adulto. Es la palabra del adulto la que habrá de marcar y determinará las modificaciones ulteriores de su personalidad. El niño aparece como el soporte de los fantasmas y del voyeurismo de los adultos. Se mueve en un mundo en el cual lo no-dicho expresa una dificultad, un drama en la pareja de los padres, drama muy claramente percibido por el niño.</p>
+
+                    <h4>El caso de Sam (Erikson)</h4>
+                    <p>Erikson (8) nos brinda una notable demostración de esto en un estudio acerca de una crisis que en primera instancia había sido denominada "neurológica" en un niño de cinco años, Sam. Sam tiene tres años cuando su madre lo descubre atacado por una crisis semejante a la crisis cardíaca de que murió su abuela cinco días antes. El médico establece un diagnóstico de epilepsia. A través del caso de Sam, Erikson se esfuerza por mostrarnos de qué manera en el origen de un síntoma aparentemente orgánico es posible hacer surgir el acontecimiento psicológico perturbador.</p>
+
+                    <h4>2.</h4>
+                    <p>Si bien Erikson, gracias a su intuición clínica, pudo escapar a una actitud estrechamente médica en la que la interrogación se dirige a los hechos más que al ser, sucede en cambio con otros teóricos, no liberados de cierto pensamiento filosófico heredado del siglo XIX, que sus concepciones teóricas llegan a obstaculizar la aprehensión correcta de un caso. Los vemos interrogar una "realidad" humana y una conducta, divididos como están entre cierto determinismo biológico y las teorías culturalistas.</p>
+
+                    <p>En "Un caso de psicosis infantil" (22), vemos hasta qué punto ciertas concepciones teóricas pueden llegar a obstaculizar al analista en su escucha. Preocupado por su propia idea acerca de cierta situación, capta un discurso completo pero deja escapar su sentido. El discurso del niño es captado como un hecho experimental, es objetivado para ser sometido luego al juicio seguro del médico.</p>
+
+                    <div class="footnotes">
+                        <h4>Notas</h4>
+                        <p>1. Simbólico como se sabe. Lacan distingue entre lo simbólico, lo imaginario y lo real.</p>
+                        <p>2. Cf. F. Dolto, "Hypotheses nouvelles concernant les réactions de jalousie a la naissance dún puiné".</p>
+                        <p>3. Pronunciada por un niño de cinco años, según informa F. Dolto.</p>
+                        <p>4. S. Freud "Historiales clínicos".</p>
+                        <p>8. Erik H. Erikson. infancia y sociedad, cit.</p>
+                        <p>22. S. Lebovici u J. McDougall, Un cas de psychose infantile.</p>
+                    </div>
                 `
             },
             {
-                id: "parte2",
-                title: "Segunda Parte: La Primera Entrevista",
+                id: "cap2",
+                title: "Capítulo 2: La transferencia",
                 content: `
-                    <span class="page-marker">Página 12</span>
+                    <h2 class="chapter-title">Capítulo 2</h2>
+                    <h3>La transferencia en Psicoanálisis de niños. Problemas actuales</h3>
+                    
+                    <p>Lo que dificulta la discusión en el debate instaurado acerca de la existencia o no de la transferencia en psicoanálisis de niños es la concepción que los diferentes autores tienen de la transferencia. Sus puntos de referencia son la efectividad, en el comportamiento y la adaptación; ahora bien: tales nociones son insuficientes para que sea posible circunscribir aquello que verdaderamente se cuestiona.</p>
+
+                    <p>Me propongo interrogar ante todo las manifestaciones de la neurosis de transferencia, tal como fueron desentrañadas en dos textos (2). He de detenerme en un momento de la cura. Lo que tienen en común los casos de Joy y de Dottie es la manera en que el analista, los padres y el niño resultan, en cierta etapa del análisis, arrastrados a un mismo campo de juego, en una situación de angustia.</p>
+
+                    <h4>El caso de Joy</h4>
+                    <p>Joy, de once años, es una seudo débil mental. La autora nos muestra que la confesión de un deseo inconsciente escandirá las etapas de la transferencia y marcará los primeros progresos de la niña en la cura. Joy formula luego demandas orales según una modalidad cada vez más regresiva.</p>
+                    
+                    <p>Surge el episodio del teléfono, que aclara qué es lo que está en juego en un momento preciso de la situación transferencial. Joy luego de haber traducido en la transferencia los celos y sus reivindicaciones, expresa su deseo de ser la única. La ausencia de los padres en la realidad hizo surgir un daño imaginario que la niña trata de colmar formulando demandas cada vez más exigentes dirigidas a la analista.</p>
+
+                    <h4>El caso de Dottie</h4>
+                    <p>Si Joy juega con su llamada, Dottie (siete años) (3) por su parte se convierte en víctima de una fobia a los perros en la misma casa de su analista. El día en que la niña abandona las perturbaciones del comportamiento que habían motivado su entrada en el análisis, la madre hace una depresión. Entonces Dottie desarrolla otros síntomas.</p>
+
+                    <p>La transferencia, en el análisis de Dottie, expresa una situación de defensa contra la angustia tanto en la casa como en la escuela o en el análisis. Al reducir la noción de transferencia a una referencia directa a la persona misma del analista, S. F. se vedó la posibilidad de poner de manifiesto el elemento simbólico incluido en la relación transferencial.</p>
+
+                    <h4>Conclusiones sobre la transferencia</h4>
+                    <p>El descubrimiento que hace Freud en 1897 (32) consiste en haber sabido vincular la transferencia con la resistencia concebida como obstáculo, en el discurso del sujeto, para la confesión de un deseo inconsciente.</p>
+                    
+                    <p>En el psicoanálisis de niños, la cuestión no consiste en saber si el niño puede o no transferir sobre el analista sus sentimientos hacia padres con los que todavía vive, sino en lograr que el niño pueda salir de cierta trama de engaños que va urdiendo con la complicidad de sus padres. Esto solo puede realizarse si comprendemos que el discurso que se dice es un discurso colectivo: la experiencia de la transferencia se realiza entre el analista, el niño y los padres.</p>
+
+                    <div class="footnotes">
+                        <h4>Notas</h4>
+                        <p>1. Comunicación a la Schweizerische Gesellschaft der Psychotherapeuten für Kinder und Jugendliche, 29 de enero de 1966.</p>
+                        <p>2. Sara Kut, "Changing Patterns in the Analysis of an Eleven Year Old Girl".</p>
+                        <p>3. Selma H. Fraiberg, "Clinical Notes on the Nature of Transference in Child Analysis".</p>
+                        <p>32. Freud llamaba a Fliess su otro yo.</p>
+                    </div>
+                `
+            },
+            {
+                id: "cap3",
+                title: "Capítulo 3: Psicoterapia de las psicosis",
+                content: `
+                    <h2 class="chapter-title">Capítulo 3</h2>
+                    <h3>La psicoterapia de las psicosis</h3>
+                    
+                    <p>En 1896 (1) Kraepelin describe la demencia precoz como entidad nosológica. Considera irremediable el profundo deterioro de las facultades intelectuales que se manifiesta en esta enfermedad. Quince años más tarde, E. Bleuler vuelve a cuestionar toda la nosografía clásica. Además de no parecerle evidente el proceso de deterioro esquizofrénico, está convencido de que el enfermo se burla de su médico.</p>
+
+                    <p>La orientación de los trabajos de los psicoanalistas sobre la psicosis infantil sigue siendo con frecuencia esencialmente descriptiva (salvo la escuela kleiniana). En rigor, esas investigaciones se aproximan por su forma a las investigaciones psiquiátricas clásicas.</p>
+
+                    <h4>El enfoque de Laing</h4>
+                    <p>Laing (7) insiste en un hecho actualmente admitido por todos: que en medicina no hay asunto más controvertido que el diagnóstico de esquizofrenia. La psiquiatría, nos dice, se ocupó del problema de un comportamiento social juzgado anormal. Laing nos muestra a través de numerosos ejemplos clínicos que los síntomas catatónicos y paranoides, el empobrecimiento afectivo, las alucinaciones auditivas, el retraimiento autístico, aparecen como un eco del discurso de los padres.</p>
+
+                    <h4>Casos clínicos: Christiane, León, Luciano, Sofía</h4>
+                    <p>En este capítulo se analizan varios casos graves. Christiane, de seis años, manifiesta un deseo de autonomía, pero su madre interviene en el plano de lo real para imposibilitar cualquier ruptura. Luciano, de 14 años, deja escapar un discurso que impresiona por sus entonaciones musicales ("¿No hay veneno?, no me gusta estar muerto").</p>
+
+                    <p>Resumamos. La hipótesis de una afección neonatal había sido propuesta en los casos de Sofía, Emilio, Christiane y León: el factor orgánico parecía estrechamente vinculado con las perturbaciones psicógenas. En la cura, sin embargo, fue posible en muchos casos desechar la hipótesis de organicidad en beneficio del factor psicógeno únicamente.</p>
+
+                    <p>El anhelo sangriento (o el deseo inconsciente de que el niño siga enfermo) existe de manera franca o disimulada; en ambos casos, vimos que no hay lugar para un sujeto en la palabra materna que el niño escucha. Cuando los padres se dirigen al analista por su niño enfermo, al hablar de éste indirectamente hablan de sí mismos.</p>
+
+                    <div class="footnotes">
+                        <h4>Notas</h4>
+                        <p>1. E. Kraepelin. Psychiatrie.</p>
+                        <p>3. E. Bleuler, Dementia Praecox oder Gruppe der Schizophrenien.</p>
+                        <p>7. Laing y Esterson, Cordura, locura y familia.</p>
+                    </div>
+                `
+            },
+            {
+                id: "parte2_cap4",
+                title: "Segunda Parte: Pablo",
+                content: `
                     <h2 class="chapter-title">Segunda Parte</h2>
-                    <h3>La Primera Entrevista: ¿Quién Habla?</h3>
+                    <h3>Capítulo 4: Pablo o la palabra del médico</h3>
                     
-                    <p>La entrada en escena suele estar marcada por un ritual. Entran los padres, entra el niño. A menudo, el niño es empujado hacia adelante ("pasa tú primero"), o retenido de la mano como un objeto frágil. Se sientan. Y entonces comienza el relato. Generalmente es la madre quien toma la palabra para exponer la "historia" de la enfermedad. El padre asiente o añade detalles técnicos. El niño, mientras tanto, calla. A veces juega, a veces mira al vacío, pero siempre escucha.</p>
+                    <p>Pablo, de dos años y medio, está en vísperas de una nueva hospitalización. Anoréxico, con insomnio, domina mediante sus síntomas a los adultos de la casa. Cuando tratan de regañarlo, se desmaya. Cuando tratan de darle un calmante, desarrolla los espasmos del llanto. Y cuando lo fuerzan para que coma también responde mediante una crisis alérgica. La madre se da por vencida. Se encuentra al borde del agotamiento nervioso: "Este niño pudo conmigo", me dirá.</p>
 
-                    <p>Lo que se nos presenta en este primer encuentro no es la historia del niño, sino la historia que los padres se han construido sobre él. Es una biografía oficial, llena de fechas, de diagnósticos médicos anteriores, de fracasos escolares. Es un discurso cerrado, sin fisuras, donde todo parece tener una causa lógica: "Es así porque nació prematuro", "es así porque el padre viaja mucho".</p>
+                    <p>El último de una familia con cinco hijos, Pablo vino al mundo el día en que el mayor de éstos se casaba. Embarazo no deseado. La madre se sintió manifiestamente culpable por estar encinta otra vez a su edad.</p>
 
-                    <p>La tarea del analista en esta fase inicial es subversiva. Debe introducir una duda allí donde hay certeza. Debe dejar de escuchar la "queja" (el síntoma que molesta) para empezar a escuchar la "demanda" (lo que realmente piden los padres, que a menudo es ser confirmados en su rol de víctimas de un niño difícil).</p>
+                    <p>A la edad de dieciocho meses, crisis "convulsivas" provocan una consulta psiquiátrica: "Este niño, dice el médico, la quebrantará, señora; si es que usted no lo quebranta a él."</p>
 
-                    <span class="page-marker">Página 13</span>
-                    <h3>El Niño como Objeto del Fantasma</h3>
-                    
-                    <p>En esta dinámica, el niño a menudo ocupa el lugar de objeto en el fantasma materno. ¿Qué quiere decir esto? Que el niño viene a tapar una falta, a completar a la madre, o a representar aquello que ella rechaza de sí misma. Si el niño "no habla", quizás es porque en la economía familiar su silencio es necesario para que la madre pueda seguir hablando por él.</p>
+                    <p>La enfermedad fue utilizada por Pablo como un signo destinado a suscitar, más allá de los cuidados reales, el deseo materno. Pablo exigía de su madre que ésta lo colmase, pero al mismo tiempo, como sujeto, se sentía desposeído. En su relación con su madre, Pablo se situaba alternativamente en el puesto del superjefe de mamá y en el de un Pablo enfermo.</p>
 
-                    <p>Recuerdo el caso de un niño de seis años, traído por "retraso grave". La madre hablaba de él como si fuera un bulto, describiendo sus funciones corporales con una crudeza clínica. Cuando me dirigí directamente al niño y le pregunté: "¿Y tú, qué piensas de todo esto?", se produjo un silencio aterrador. La madre intentó responder por él. "Él no entiende", dijo. Pero el niño me miró. En esa mirada había un sujeto pidiendo auxilio, un sujeto aplastado bajo el peso de las palabras maternas.</p>
-
-                    <p>El psicoanálisis no consiste en acumular datos anamnésicos (cuándo caminó, cuándo controló esfínteres), sino en captar la posición subjetiva del niño respecto a esos datos. ¿Cómo vive él su "retraso"? ¿Qué beneficio secundario obtiene al mantenerse en esa posición de bebé dependiente? La cura comienza en el momento en que el niño intuye que hay otro lugar posible para él, un lugar fuera del discurso alienante de los padres.</p>
+                    <p>Casos como el de Pablo se encuentran cotidianamente en la consulta pediátrica. La palabra del médico siempre tiene efectos decisivos: está constituida por una confrontación del deseo médico con la angustia de los padres. En este caso, el médico se sintió amenazado en su ser por la conducta mortífera del niño. Para defenderse, preconizó recurrir a la fuerza: su efecto fue el subsiguiente bloqueo de todo el movimiento de la metáfora, lo cual dejaba la puerta abierta para la emergencia del síntoma.</p>
                 `
             },
             {
-                id: "parte3",
-                title: "Tercera Parte: La Dirección de la Cura",
+                id: "parte2_cap5",
+                title: "Capítulo 5: Carola",
                 content: `
-                    <span class="page-marker">Página 18</span>
-                    <h2 class="chapter-title">Tercera Parte</h2>
-                    <h3>La Dirección de la Cura y el Lugar de los Padres</h3>
+                    <h2 class="chapter-title">Capítulo 5: Carola o el silencio de la madre</h2>
                     
-                    <p>Una vez iniciado el tratamiento, surge inevitablemente la resistencia. Y curiosamente, esta resistencia suele provenir más de los padres que del niño. Cuando el niño empieza a cambiar, cuando deja de ser el "síntoma" que sostenía el equilibrio familiar, la angustia cambia de lugar. Los padres, que pedían a gritos la curación, de repente se encuentran desorientados.</p>
+                    <p>Una pareja muy joven está allí, silenciosa, frente a mí. Vienen por su hija Carola, de seis años. La mujer toma de la mano al marido, se la siente tensa, al borde del llanto. El hombre tiene rasgos de adolescente, parece ausente. Reviso la historia clínica que me remitió el hospital. El diagnóstico es de esquizofrenia (mutismo psicógeno). Se aconseja tratamiento psicoanalítico. La madre tiene apuro de que "se haga algo".</p>
 
-                    <p>"Desde que viene aquí, está más rebelde", nos dicen. "Ya no nos cuenta nada". En realidad, lo que sucede es que el niño está empezando a constituir su propio jardín secreto, un espacio psíquico del cual los padres están excluidos. El analista debe sostener firmemente este espacio, protegiendo la transferencia del niño contra las intrusiones parentales.</p>
+                    <p>"Fue algo que se produjo de manera insensible. Un buen día ya no hablaba." Al perder la palabra, Carola se convirtió en fóbica. Poco a poco recupera el apetito, pero ante la menor contrariedad vomita.</p>
 
-                    <p>No se trata de educar a los padres ni de culpabilizarlos. Decirle a una madre "usted es demasiado protectora" solo aumenta su ansiedad y refuerza sus defensas. Se trata, más bien, de escuchar también el sufrimiento de los padres, pero en un espacio diferenciado, o derivarlos a otro analista si su propia problemática invade demasiado el terreno del hijo.</p>
+                    <p>Un tiempo después recibo a Carola y su madre. La niña está silenciosa, es evidente que está esperando que su madre hable. Nadie se decide a romper el silencio. Carola se levanta, se sube a las rodillas de su madre, apoya la cabeza sobre su hombro y se chupa el dedo con aire ausente.</p>
 
-                    <span class="page-marker">Página 19</span>
-                    <h3>El Juego y la Palabra</h3>
-                    
-                    <p>En el análisis de niños, el juego, el dibujo y el modelado ocupan un lugar central. Pero no nos confundamos: el juego no es un fin en sí mismo. No jugamos con el niño para entretenerlo, sino para permitirle poner en escena sus fantasmas. El dibujo de una casa cerrada, de un monstruo devorador o de una guerra interminable, son letras de un discurso que el niño aún no puede articular verbalmente.</p>
+                    <div class="dialogue">
+                        <p>—Cuando a Carola la retan, —me dice la madre—, hace como yo cuando era niña. Se muerde la muñeca. Esa muñeca, estoy segura de que soy yo.</p>
+                        <p>Le contesto (para que Carola me escuche):</p>
+                        <p>—Retar no quiere decir comer. Cuando mamá grita, hay en ella un padre que le dice: "Cría bien a nuestra hija, cuídala".</p>
+                    </div>
 
-                    <p>La intervención del analista consiste en poner palabras allí donde el niño pone actos. "Ese monstruo parece tener mucha hambre", "Ese soldado está solo contra todos". Al nombrar la angustia, la hacemos manejable. La pasamos del registro de lo Real (lo que aterroriza sin nombre) al registro de lo Simbólico (lo que se puede decir y compartir).</p>
+                    <p>La niña puede dar esta palabra porque yo apelé a la presencia del padre en la madre. En una situación de tres Carola no se siente en peligro de ser comida (o de comer al otro).</p>
 
-                    <p>A veces, el progreso es espectacular. Otras veces, es lento y silencioso. Un niño que era encopréctico (que no controlaba sus heces) puede empezar a "regalar" dibujos al analista. Es el paso del objeto anal (retenido o expulsado violentamente) al objeto de don, al objeto de intercambio social. Es el nacimiento del sujeto cultural.</p>
-
-                    <p>El fin del análisis no es producir un niño modelo, adaptado y sumiso. El fin es que el niño pueda asumir su propia historia, con sus luces y sus sombras, y que pueda decir "Yo" sin tener que mirar de reojo la aprobación de la madre.</p>
+                    <p>Carola mediante su mutismo y su hermana mediante su anorexia fueron testigos, en última instancia, de una pregunta que había quedado sin respuesta en la historia de la madre: ¿mi nacimiento fue o no fue deseado? Con este modo de ser la madre a su vez dio a luz a niños de los que es difícil saber si fueron paridos para vivir o para morir. Mi escucha analítica le permitió a la madre crear una situación en la que su descendencia ya no tuvo que actuar su problema personal.</p>
                 `
             },
             {
-                id: "parte4",
-                title: "Cuarta Parte: El Niño ante la Institución",
+                id: "parte2_cap6",
+                title: "Capítulo 6: Guido",
                 content: `
-                    <span class="page-marker">Página 24</span>
-                    <h2 class="chapter-title">Cuarta Parte</h2>
-                    <h3>El Diagnóstico Médico como Etiqueta</h3>
+                    <h2 class="chapter-title">Capítulo 6: Guido o la muerte de su padre</h2>
                     
-                    <p>Cuando el niño llega a la institución —sea la escuela especial, el hospital o el centro psicopedagógico—, a menudo llega precedido por un expediente. "Debilidad mental", "carácter inestable", "dislexia". Estas palabras, que pretenden ser descriptivas, tienen un efecto performativo: crean la realidad que nombran. El niño termina identificándose con su etiqueta. "Soy un débil", parece decirnos, "así que no espere nada de mí".</p>
+                    <p>En el hospital me piden que examine el caso de Guido, de seis años. El diagnóstico de oligofrenia parece no dejar lugar a dudas, pero también forma parte del cuadro clínico un elemento esquizofrénico. Todos están de acuerdo en que el déficit intelectual es grave. La escuela se niega a seguir admitiendo a Guido.</p>
 
-                    <p>El discurso médico tradicional busca clasificar el síntoma, objetivarlo y, si es posible, suprimirlo con medicación o reeducación. El psicoanálisis, en cambio, se pregunta: ¿Qué dice este síntoma? Si tapamos la boca del síntoma con una pastilla o con un ejercicio repetitivo, corremos el riesgo de silenciar al sujeto para siempre. El "débil mental" a menudo no es alguien que carece de inteligencia, sino alguien que ha decidido (inconscientemente) no saber nada, porque saber es demasiado peligroso en su constelación familiar.</p>
+                    <p>Ocho días después de la partida de Guido hacia el sanatorio (se trata de su primera separación del medio familiar), el padre se suicida. Dos meses después, la madre informa al niño de la desaparición del padre: "Papá está en el cementerio, le llevaremos flores." El niño, con la mirada cerrada, acusa el golpe, pero luego se recupera y agrega con calma: "La muerte no existe, no es verdad que papá esté muerto". Guido se instituye en su relación con el Otro, como aquel que no sabe que el padre ha muerto.</p>
 
-                    <span class="page-marker">Página 25</span>
-                    <h3>La Institución como Refugio del Síntoma</h3>
-                    
-                    <p>Las instituciones, paradójicamente, pueden convertirse en aliadas de la enfermedad. Necesitan "enfermos" para funcionar. Un niño que se cura, que se rebela, que empieza a desear cosas distintas, es un elemento disruptivo en un internado o en una clase especial. A menudo he visto cómo la institución se angustia cuando el niño mejora. "Se ha vuelto inmanejable", dicen los educadores cuando el niño deja de ser un objeto pasivo.</p>
+                    <p>Guido se erige como justiciero: reclama la vuelta del padre, y al mismo tiempo acusa a su madre de haberlo envenenado. Le explico que eso no es verdad.</p>
 
-                    <p>El analista que trabaja en una institución se encuentra en una posición difícil. Debe trabajar "en contra" de la inercia institucional. Debe crear un espacio —aunque sea simbólico— donde el niño no sea un número de expediente, sino una historia singular. Esto a menudo provoca roces con el equipo médico o pedagógico, que busca resultados rápidos y visibles.</p>
+                    <p>—Sé que tu papá tenía una enfermedad. El falso papá enfermo está muerto. El verdadero está en tu corazón.</p>
 
-                    <p>La segregación es la tentación constante. Separar a los "normales" de los "anormales" tranquiliza a la sociedad. Pero el niño segregado nos devuelve, como un espejo deformante, la verdad que la sociedad rechaza. Al encerrar al "loco" o al "retrasado", creemos haber encerrado el problema, pero solo hemos desplazado la angustia.</p>
+                    <p>Al cabo del segundo año de cura, el niño hace una doble confesión:</p>
+                    <p>—No quiero más a mi papá, porque no vuelve más.</p>
+                    <p>—Cuando me joden me hago el loco.</p>
+
+                    <p>Al mismo tiempo que acepta estar marcado por la pérdida de un padre, Guido confiesa que se hace el loco (es decir que juega a serlo). El juego anda mal, la escuela especializada no lo quiere más. El niño es hospitalizado.</p>
+
+                    <p>Quizás el desenlace hubiese sido diferente si el niño hubiese seguido estando enfermo (o si yo hubiese propuesto diferir la cura). Nada nos permite afirmar que ese fin era ineluctable.</p>
                 `
             },
             {
-                id: "parte5",
-                title: "Quinta Parte: El Deseo del Analista",
+                id: "parte2_cap7",
+                title: "Capítulo 7: Mireya",
                 content: `
-                    <span class="page-marker">Página 30</span>
-                    <h2 class="chapter-title">Quinta Parte</h2>
-                    <h3>El Lugar y el Deseo del Analista</h3>
+                    <h2 class="chapter-title">Capítulo 7: Mireya y su pregunta</h2>
                     
-                    <p>¿Qué quiere el analista? Esta pregunta es fundamental. Si el analista quiere "curar" a toda costa, si quiere que el niño sea "bueno" y "normal", entonces está ocupando el lugar del educador o del padre ideal. El deseo del analista debe ser otro: debe ser un deseo de saber, un deseo de permitir que surja la verdad del sujeto, aunque esa verdad sea incómoda.</p>
+                    <p>I. Me propongo examirar aquí detalladamente cierto tipo de discurso en una niña que, en la pregunta que plantea, solo puede plantear la pregunta de otro, en este caso la del padre.</p>
 
-                    <p>El analista debe soportar ser el depositario de los "objetos malos" del niño. El niño puede agredirnos, rechazarnos o ignorarnos. Si reaccionamos desde nuestra propia subjetividad herida, perdemos la partida. Debemos mantenernos en ese lugar tercero, ni cómplices de los padres ni salvadores del niño. Somos el soporte de una transferencia que permite al niño ensayar nuevas formas de relación.</p>
+                    <p>Se presenta una pareja mandada por el Dr. X. Se aconsejó un intento de cura psicoanalítica para la hija, Mireya, de ocho años... el diagnóstico es de "esquizofrenia sobre una base oligofrénica".</p>
 
-                    <span class="page-marker">Página 31</span>
-                    <h3>El Final del Análisis</h3>
+                    <p>¿Quién es Mireya? es la pregunta que plantea en la primera sesión. No espera ninguna respuesta. ¿Es Mireya o alguien a través de ella quien plantea la interrogación?</p>
+
+                    <p>Ahora Mireya aparece en su síntoma como sujeto. Convierte a su locura, a su estupidez, en lo que está en juego en el análisis. Asume el papel de clown, está allí, loca, para divertir.</p>
+
+                    <p>¿Mireya es oligofrénica o psicótica? Tal es la pregunta planteada al comienzo de la cura. Al final de la cura me pregunto si acaso el análisis en un momento dado no la convirtió en una histérica identificada con la tía psicótica. La excepcional duración de la cura se debió a la relación particular que vincula a la niña con un padre paranoico y perverso, y con una madre histérica y "débil".</p>
+                `
+            },
+            {
+                id: "conclusiones",
+                title: "Conclusiones",
+                content: `
+                    <h2 class="chapter-title">Conclusiones</h2>
                     
-                    <p>¿Cuándo termina el análisis de un niño? No necesariamente cuando desaparece el síntoma por el que consultó. A veces el síntoma cae rápido, pero la estructura sigue intacta. El final se perfila cuando el niño ha logrado subjetivar su historia, cuando puede posicionarse ante el deseo del Otro sin quedar aplastado.</p>
+                    <p>En el prefacio que escribió para <em>Wayward Youth</em> de Aichhorn (1), S. Freud admite que la investigación psicoanalítica se desplazó del estudio del neurótico hacia el estudio de los niños. Y agrega: "El análisis mostró de qué manera el niño vive, sin cambiar, en el hombre enfermo tanto como en el soñador o en el artista".</p>
 
-                    <p>A menudo, el final es decidido por los padres, precipitadamente, justo cuando las cosas empiezan a moverse de verdad. "Ya está bien", dicen. "Ya obedece". Es el momento en que el analista debe maniobrar con delicadeza para no dejar caer al niño, pero reconociendo también los límites de lo posible en esa estructura familiar.</p>
+                    <p>El psicoanálisis de niños presupone un proceder que básicamente no difiere del análisis de los neuróticos adultos. Cuando en un análisis se plantea una pregunta, ésta lo hace a partir de Otro, y se refiere al otro que está en el paciente (2). El analizado se constituye como sujeto hablante a partir de la sensación de que se dirige a alguien que está marcado por una experiencia que les es común.</p>
 
-                    <p>En última instancia, el psicoanálisis de niños nos enseña sobre la condición humana misma. El niño nos muestra, en carne viva, cómo nos constituimos como sujetos a través del lenguaje y del deseo de quienes nos acogieron en este mundo. Curar no es borrar la cicatriz, sino ayudar al sujeto a escribir su propia historia a partir de ella.</p>
+                    <p>Mi manera de trabajar no tiene nada en común con lo que corrientemente se designa con el nombre de <em>Family Psychotherapy</em>. Los autores en cuestión se levantan contra los analistas "misioneros", que vienen en ayuda de los niños perturbados "matando" a las madres; es necesario dicen, "salvar a la familia para salvar al niño".</p>
+
+                    <p>La evolución de una cura implica el descubrimiento de lo que está en juego en la experiencia de la separación niño-padre. Esta separación es vivida por referencia al análisis, a través del deseo de muerte, y entonces el niño y el padre se firman como objeto que le falta al otro. El analista tiene que poder situarse dentro del discurso que se pronuncia, para que pueda posibilitar una dialéctica. Y entonces es cuando habrá de surgir una palabra verdadera desde el deseo de muerte. Nuevamente, a partir de la muerte, de la división, de la alienación, se constituirá en el análisis el sujeto, como sujeto que habla, es decir como sujeto nacido de un drama, marcado y modelado por éste.</p>
+                `
+            },
+            {
+                id: "apendices",
+                title: "Apéndices",
+                content: `
+                    <h2 class="chapter-title">Apéndices</h2>
+                    
+                    <h3>I. La debilidad mental cuestionada</h3>
+                    <p>Freud abre una época. Si se interroga el pasado se advierte que fue a los administradores y a los juristas a quienes la sociedad encargó trazar el limite aceptable entre la razón y la sinrazón. Después de la lepra, en un momento de la historia, la locura resultó de esta manera aislada.</p>
+                    <p>Es un hecho que muchos psicoanalistas se apartan de lo que es debilidad mental y eluden el diálogo establecido en torno de esta afección. Tardaron bastante tiempo en admitir a la psicosis dentro de su dominio. Quizás haya que preguntarse si la extensión del psicoanálisis a ciertos casos de debilidad mental no podría marchar por un camino análogo.</p>
+
+                    <h3>II. Balance de una experiencia en E.M.P.</h3>
+                    <p>Los psiquiatras están de acuerdo en la necesidad de que el hospital sea un organismo "viviente, vivible y flexible" antes de que se introduzca la psicoterapia individual. La experiencia que he de presentar no tiene nada de original. Se trata de una pequeña institución de reciente data. Es demasiado pronto como para que podamos extraer de ella una verdadera enseñanza.</p>
+
+                    <h3>III. Las dificultades de colaboración entre psicoanalistas y educadores en la institución</h3>
+                    <p>Surgen dificultades cuando no se ha definido claramente al comienzo la diferencia que existe entre una posición pedagógica y una posición analítica. En la primera, una acción adaptativa se organiza en torno de la realidad del niño débil y psicótico; en la otra, una interrogación se elabora a partir de nuestra propia representación del niño.</p>
                 `
             }
         ];
