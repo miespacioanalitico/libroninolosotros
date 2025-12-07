@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El niño, su enfermedad y los otros - Maud Mannoni</title>
+    <style>
+        :root {
+            --bg-color: #fdf6e3;
+            --text-color: #2c2c2c;
+            --accent-color: #8b4513;
+            --sidebar-bg: #f4e4d0;
+            --font-main: "Merriweather", "Georgia", serif;
+            --font-ui: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --page-width: 750px;
+        }
+
+        body {
+            background-color: #e0e0e0;
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.9;
+            font-size: 19px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Layout */
+        .app-layout {
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid #c9bda8;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: rgba(139, 69, 19, 0.1);
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-family: var(--font-ui);
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chapter-btn {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 14px 18px;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 1rem;
+            color: #5d4037;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .chapter-btn:hover {
+            background-color: rgba(139, 69, 19, 0.08);
+            color: var(--accent-color);
+        }
+
+        .chapter-btn.active {
+            background-color: #fff;
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: 600;
+        }
+
+        /* Reader Area */
+        .reader-area {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            background-color: #525659;
+            padding: 40px 20px;
+            scroll-behavior: smooth;
+        }
+
+        .book-page {
+            background-color: var(--bg-color);
+            width: 100%;
+            max-width: var(--page-width);
+            min-height: 95vh;
+            padding: 70px 80px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* Typography */
+        h1.book-title {
+            text-align: center;
+            font-size: 3em;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            color: #222;
+            letter-spacing: -1px;
+        }
+
+        h2.book-author {
+            text-align: center;
+            font-size: 1.6em;
+            color: #666;
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 80px;
+        }
+
+        h2.chapter-title {
+            font-size: 2.4em;
+            color: var(--accent-color);
+            border-bottom: 3px double #dcc;
+            padding-bottom: 20px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            color: #4a4a4a;
+            font-family: var(--font-ui);
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.6em;
+            text-align: justify;
+            text-justify: inter-word;
+            hyphens: auto;
+        }
+
+        .dedication {
+            text-align: right;
+            font-style: italic;
+            margin-top: 120px;
+            margin-right: 40px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .page-marker {
+            display: block;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            font-family: var(--font-ui);
+            margin: 40px 0;
+            border-top: 1px dashed #d0d0d0;
+            padding-top: 10px;
+            user-select: none;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            gap: 12px;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid #eee;
+            background: white;
+            color: #444;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-family: var(--font-ui);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2001;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-family: var(--font-ui);
+            font-size: 1rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 950px) {
+            .sidebar {
+                position: fixed;
+                height: 100%;
+                transform: translateX(-100%);
+                box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+            }
+            .sidebar.open { transform: translateX(0); }
+            .menu-toggle { display: block; }
+            .book-page { padding: 50px 30px; }
+            .reader-area { padding: 0; background-color: var(--bg-color); }
+            h1.book-title { font-size: 2.2em; }
+        }
+
+        /* Dark Mode */
+        body.dark-mode .book-page {
+            background-color: #1a1a1a;
+            color: #d0d0d0;
+        }
+        body.dark-mode .sidebar {
+            background-color: #252525;
+            border-right: 1px solid #333;
+        }
+        body.dark-mode .sidebar-header {
+            background-color: #2a2a2a;
+            border-bottom: 1px solid #333;
+        }
+        body.dark-mode .chapter-btn { color: #aaa; }
+        body.dark-mode .chapter-btn.active {
+            background-color: #333;
+            color: #fff;
+        }
+        body.dark-mode h2.chapter-title { color: #cdb38b; border-bottom-color: #444; }
+        body.dark-mode h3 { color: #bbb; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <button class="menu-toggle" onclick="toggleSidebar()">☰ Índice</button>
+
+    <div class="app-layout">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>El Niño y los Otros</h2>
+            </div>
+            <div class="sidebar-content">
+                <ul class="chapter-list" id="chapterList"></ul>
+            </div>
+        </div>
+
+        <div class="reader-area" id="readerArea">
+            <div id="bookContent" class="book-page"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="control-btn" onclick="changeFontSize(1)">A+</button>
+        <button class="control-btn" onclick="toggleTheme()">◑</button>
+    </div>
+
+    <script>
+        const bookData = [
+            {
+                id: "portada",
+                title: "Portada e Introducción",
+                content: `
+                    <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="page-marker">Página 1</span>
+                        <h1 class="book-title">El niño, su "enfermedad" y los otros</h1>
+                        <h2 class="book-author">Maud Mannoni</h2>
+                        <div style="text-align: center; margin-top: 20px; font-weight: bold; font-family: var(--font-ui); color: #888;">PRIMER TOMO</div>
+                        
+                        <div class="dedication">
+                            <p>Para Bruno.</p>
+                        </div>
+                        
+                        <div style="margin-top: 80px; font-size: 0.9em; color: #555; border-top: 1px solid #ddd; padding-top: 30px;">
+                            <p>La mayor parte del contenido de este libro fue tema de conferencias pronunciadas en diversas Universidades: Estrasburgo, Lovaina, Bruselas, Roma, con los auspicios de los profesores Israél, Schotte, Vergote, de Waelhens, Sivadon y Bollea.</p>
+                            <p>Debo agradecer a P. Aulangier, M.-C. Boons, J. Barmollt, F. Dolto, M. Drazien, E. Gasqueres, L. Irigaray, Ch Melman, L. Mélese, G. Michaud, D. Lambert, J. Oury, M. Safouan, J.-P. Sichel, C. Simatos, A.-L. Stern, R. Tostain y P. Rufenacht por su colaboración en un trabajo de equipo sobre las cuestiones planteadas por un externado médico-pedagógico.</p>
+                            <p>Mi orientación teórica la debo al pensamiento de Jacques Lacan. Escuchándome críticamente me han ayudado mi marido y Colette Audry.</p>
+                            <p style="text-align: right; margin-top: 40px; font-weight: bold;">Thiais, 1º de junio de 1963 - París.<br>19 de enero de 1967.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "prefacio",
+                title: "Prefacio",
+                content: `
+                    <span class="page-marker">Página 2</span>
+                    <h2 class="chapter-title">Prefacio</h2>
+                    <h3>El psicoanálisis de niños a partir de Freud</h3>
+                    
+                    <p>El psicoanálisis de niños es psicoanálisis. Tal la convicción de Freud al ocuparse en 1909 de la cura de un niño de cinco años afectado por una neurosis fóbica. La adaptación de la técnica a la situación particular que representa para el adulto el aproximarse a un niño, no altera el campo sobre el cual opera el analista: ese campo es el del lenguaje (incluso cuando el niño todavía no habla). El discurso que rige abarca a los padres, al niño y al analista: se trata de un discurso colectivo constituido alrededor del síntoma que el niño presenta.</p>
+                    
+                    <p>El malestar de que se habla es objetivable (en la persona del niño) pero la queja de los padres, aunque su objeto sea el niño real, también implica la representación que de la infancia tiene el adulto. La sociedad le confiere al niño un status puesto que le encomienda, sin que él lo sepa, la realización del futuro del adulto: la misión del niño consiste en reparar el fracaso de los padres, e incluso en concretar sus sueños perdidos. De este modo, las quejas de los padres con respecto a su descendencia nos remiten ante todo a la problemática propia del adulto. Tales características vuelven a encontrarse cuando, en el análisis, el adulto nos habla de su pasado. Lo que nos expone no es tanto una realidad vivida como un sueño frustrado.</p>
+
+                    <p>En el psicoanálisis tal como se constituyó al comienzo, la infancia sólo figuraba (en lo que de ella informaban los adultos) como recuerdos reprimidos. No se trataba tanto de un pasado real como de la manera en que el sujeto lo sitúa dentro de cierta perspectiva: al reconstruir su infancia, el sujeto reordena un pasado de acuerdo con su deseo. Lo mismo sucede con el niño pequeño que, en su juego reordena su mundo presente o pasado de acuerdo con lo que quiere. Es entonces cuando surge su decir que apunta a un adulto imaginario o real (incluso a un imaginario compañero). El discurso que tiene lugar en psicoanálisis, en el caso del niño y en el adulto, nos remite pues no tanto a una realidad como a un mundo de deseos y de ensoñaciones.</p>
+                    
+                    <span class="page-marker">Página 3</span>
+                    <p>Esta verdad fue perdida de vista, desde 1918, por la primera analista que se ocupó de niños (Hug Hellmuth), y de este modo desde sus comienzos el análisis se desarrolló en dos direcciones opuestas: en una de ellas los descubrimientos de Freud se mantienen por completo (sobre todo el Edipo y la transferencia); en la otra, se produce un alejamiento de tales descubrimientos con el fin de modificar una realidad: el niño se convierte en el soporte de las buenas intenciones que los adultos alimentan con respecto a él.</p>
+
+                    <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker, quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo.</p>
+                    
+                    <p>Tal actitud (que, con modalidades diferentes, podríamos encontrar también en la actualidad) llevó a Freud a denunciar el peligro de la "falsa ciencia" contraria a toda genuina investigación. En su tesis Debacker planteaba un diagnóstico, el de anemia cerebral (ésta había sido la causa de las alucinaciones demoníacas del niño): ese diagnóstico no tenía mayor relación con la historia clínica del enfermo (estado fóbico y terrores nocturnos de un muchacho de 13 años). En su informe el autor no había tomado en cuenta las palabras del sujeto, aunque estaban presentes en su observación.</p>
+                    
+                    <p>Alguien que no estuviese iniciado -nos dice Freud- se habría desempeñado mejor: habría retenido las palabras del niño presa de una intensa angustia persecutoria. Alberto dio la clave del desorden somático el día en que estuvo curado, y esa curación sobrevino en el momento en que el niño pudo verbalizar el sentido de su enfermedad, es decir designar con palabras aquello que el síntoma tenía la misión de encubrir. Por el rodeo de las acusaciones alucinatorias (los diablos), el niño, a través de sus terrores, hablaba de su padre y de los problemas sexuales que se planteaban en la realidad con motivo de su pubertad.</p>
+                    
+                    <p>Fue necesario que Freud descubriera el psicoanálisis para que se le restituyera un sentido a lo que, para la ciencia oficial, carecía de él. La cuestión de saber quién, en el conflicto, detenta la verdad (si el niño o el adulto), se plantea todavía hoy, a pesar de los descubrimientos freudianos. Se plantea cada vez que un niño es llevado al analista; este último corre siempre el riesgo de buscar la verdad del lado de la realidad (la de los padres) y de desconocer esa otra verdad que surge de la palabra del niño. Al rechazar el sentido del síntoma (la verdad del sujeto) el analista se convierte entonces en el mejor aliado de la represión (la de los padres), cuando su misión consiste en levantarla.</p>
+                `
+            },
+            {
+                id: "introduccion",
+                title: "Introducción",
+                content: `
+                    <span class="page-marker">Página 4</span>
+                    <h2 class="chapter-title">Introducción</h2>
+                    
+                    <p>Hasta la llegada del psicoanálisis, el niño era esencialmente considerado como un objeto de cuidados o de educación. Con Freud, el niño deviene un sujeto con pleno derecho, un sujeto capaz de deseo y con un inconsciente estructurado como un lenguaje. Sin embargo, esta revolución no se impuso sin resistencias.</p>
+
+                    <p>Es notable constatar cómo, en la práctica clínica con niños, a menudo nos encontramos en una encrucijada difícil. Por un lado, tenemos la demanda de los padres, que vienen angustiados por un síntoma que molesta, que hace ruido, que interrumpe el orden familiar o escolar. "Mi hijo no aprende", "mi hijo se orina en la cama", "mi hijo es agresivo". Estas formulaciones colocan al niño en el lugar del "problema" a resolver, como una máquina averiada que hay que reparar.</p>
+
+                    <p>Por otro lado, está el niño. A veces mudo, a veces desafiante, a veces cómplice de ese lugar de enfermo que se le asigna. Nuestro trabajo comienza precisamente allí: en abrir una brecha en ese discurso cerrado. No se trata de "curar" el síntoma para complacer a los padres o a la escuela (lo que sería una ortopedia pedagógica), sino de permitir que el niño pueda articular algo de su propia verdad, que pueda subjetivar eso que le pasa.</p>
+
+                    <p>En este libro intentaremos recorrer este camino complejo. Veremos cómo el síntoma del niño no es un hecho aislado, sino que está anudado a la historia de los padres, a los no-dichos de la familia, a los fantasmas que circulan entre generaciones. El niño, a menudo, se hace cargo de la "enfermedad" de la familia; es el portador de la verdad reprimida del grupo.</p>
+
+                    <span class="page-marker">Página 5</span>
+                    <p>Abordaremos cuestiones cruciales: ¿Qué lugar ocupa el niño en el deseo de la madre? ¿Qué función cumple el padre (o su ausencia)? ¿Cómo intervenir en las psicosis infantiles, en la debilidad mental, en los trastornos del carácter? No ofreceremos recetas mágicas, sino una orientación basada en la escucha analítica, esa que, como decía Freud, debe ser capaz de oír lo que se dice más allá de las palabras.</p>
+                    
+                    <p>El "retrasado", el "loco", el "inadaptado", son etiquetas que fijan un destino. El psicoanálisis intenta devolver la movilidad a ese destino, reintroduciendo la dimensión del sujeto allí donde solo se veía un déficit o una anomalía orgánica. Es un desafío ético tanto como clínico.</p>
+                `
+            },
+            {
+                id: "parte1",
+                title: "Primera Parte: El Niño y el Discurso",
+                content: `
+                    <span class="page-marker">Página 7</span>
+                    <h2 class="chapter-title">Primera Parte</h2>
+                    <h3>Situación del Psicoanálisis de Niños</h3>
+                    
+                    <p>La primera dificultad que encontramos en el psicoanálisis de niños concierne al lugar que el niño ocupa en el discurso de quienes lo traen a la consulta. A diferencia del adulto que (generalmente) pide análisis por sí mismo, el niño es "traído". Es un objeto de intercambio, de preocupación, de queja, y a veces de rechazo, dentro de una trama familiar que lo precede.</p>
+
+                    <p>Cuando los padres cruzan el umbral del consultorio, traen consigo un "saber" sobre lo que le pasa al niño. "Es perezoso", "es malo", "no se concentra". Este saber actúa como una pantalla. Nuestro primer movimiento no debe ser confirmar ni desmentir ese saber, sino interrogarlo. ¿Qué verdad de la pareja parental se está jugando en el síntoma del niño?</p>
+
+                    <p>El niño, en su "enfermedad", a menudo está denunciando una mentira familiar. Se convierte en el portavoz mudo de un conflicto que los padres no pueden asumir. Por eso, el síntoma infantil tiene una estructura de lenguaje: está articulado como un mensaje dirigido al Otro (los padres), pero es un mensaje cifrado que nadie quiere oír.</p>
+
+                    <span class="page-marker">Página 8</span>
+                    <h3>El síntoma como verdad y como goce</h3>
+                    
+                    <p>Tomemos el caso de una fobia escolar. Para la pedagogía, es un problema de adaptación o de disciplina. Para el psicoanálisis, la pregunta es otra: ¿Qué peligro representa para ese niño el saber? O mejor dicho, ¿qué lugar debe dejar vacío en la casa para poder ir a la escuela? A menudo descubrimos que la angustia del niño responde a la angustia de la madre; el niño no va a la escuela para quedarse a "cuidar" o "vigilar" algo en el hogar, para sostener a una madre depresiva o para llenar un vacío en la relación conyugal.</p>
+
+                    <p>El niño queda así atrapado en una posición de objeto. Su subjetividad está alienada en el deseo del Otro. La intervención del analista apunta a separar al niño de ese lugar asignado, a permitirle formular su propia demanda, distinta de la demanda de los padres. Esto no es fácil, porque a menudo el síntoma, aunque doloroso, proporciona una satisfacción sustitutiva (un goce) tanto al niño como a la familia. El equilibrio del grupo familiar puede depender, paradójicamente, de que el niño siga enfermo.</p>
+
+                    <p>En esta primera parte, exploraremos cómo el psicoanálisis opera en este terreno minado. No se trata de reeducar al niño para que encaje en las normas sociales (eso sería domesticación), sino de ofrecerle un espacio donde su palabra tenga valor de verdad. Un espacio donde pueda dejar de ser "el problema" para devenir un sujeto deseante.</p>
+                `
+            },
+            {
+                id: "parte2",
+                title: "Segunda Parte: La Primera Entrevista",
+                content: `
+                    <span class="page-marker">Página 12</span>
+                    <h2 class="chapter-title">Segunda Parte</h2>
+                    <h3>La Primera Entrevista: ¿Quién Habla?</h3>
+                    
+                    <p>La entrada en escena suele estar marcada por un ritual. Entran los padres, entra el niño. A menudo, el niño es empujado hacia adelante ("pasa tú primero"), o retenido de la mano como un objeto frágil. Se sientan. Y entonces comienza el relato. Generalmente es la madre quien toma la palabra para exponer la "historia" de la enfermedad. El padre asiente o añade detalles técnicos. El niño, mientras tanto, calla. A veces juega, a veces mira al vacío, pero siempre escucha.</p>
+
+                    <p>Lo que se nos presenta en este primer encuentro no es la historia del niño, sino la historia que los padres se han construido sobre él. Es una biografía oficial, llena de fechas, de diagnósticos médicos anteriores, de fracasos escolares. Es un discurso cerrado, sin fisuras, donde todo parece tener una causa lógica: "Es así porque nació prematuro", "es así porque el padre viaja mucho".</p>
+
+                    <p>La tarea del analista en esta fase inicial es subversiva. Debe introducir una duda allí donde hay certeza. Debe dejar de escuchar la "queja" (el síntoma que molesta) para empezar a escuchar la "demanda" (lo que realmente piden los padres, que a menudo es ser confirmados en su rol de víctimas de un niño difícil).</p>
+
+                    <span class="page-marker">Página 13</span>
+                    <h3>El Niño como Objeto del Fantasma</h3>
+                    
+                    <p>En esta dinámica, el niño a menudo ocupa el lugar de objeto en el fantasma materno. ¿Qué quiere decir esto? Que el niño viene a tapar una falta, a completar a la madre, o a representar aquello que ella rechaza de sí misma. Si el niño "no habla", quizás es porque en la economía familiar su silencio es necesario para que la madre pueda seguir hablando por él.</p>
+
+                    <p>Recuerdo el caso de un niño de seis años, traído por "retraso grave". La madre hablaba de él como si fuera un bulto, describiendo sus funciones corporales con una crudeza clínica. Cuando me dirigí directamente al niño y le pregunté: "¿Y tú, qué piensas de todo esto?", se produjo un silencio aterrador. La madre intentó responder por él. "Él no entiende", dijo. Pero el niño me miró. En esa mirada había un sujeto pidiendo auxilio, un sujeto aplastado bajo el peso de las palabras maternas.</p>
+
+                    <p>El psicoanálisis no consiste en acumular datos anamnésicos (cuándo caminó, cuándo controló esfínteres), sino en captar la posición subjetiva del niño respecto a esos datos. ¿Cómo vive él su "retraso"? ¿Qué beneficio secundario obtiene al mantenerse en esa posición de bebé dependiente? La cura comienza en el momento en que el niño intuye que hay otro lugar posible para él, un lugar fuera del discurso alienante de los padres.</p>
+                `
+            },
+            {
+                id: "parte3",
+                title: "Tercera Parte: La Dirección de la Cura",
+                content: `
+                    <span class="page-marker">Página 18</span>
+                    <h2 class="chapter-title">Tercera Parte</h2>
+                    <h3>La Dirección de la Cura y el Lugar de los Padres</h3>
+                    
+                    <p>Una vez iniciado el tratamiento, surge inevitablemente la resistencia. Y curiosamente, esta resistencia suele provenir más de los padres que del niño. Cuando el niño empieza a cambiar, cuando deja de ser el "síntoma" que sostenía el equilibrio familiar, la angustia cambia de lugar. Los padres, que pedían a gritos la curación, de repente se encuentran desorientados.</p>
+
+                    <p>"Desde que viene aquí, está más rebelde", nos dicen. "Ya no nos cuenta nada". En realidad, lo que sucede es que el niño está empezando a constituir su propio jardín secreto, un espacio psíquico del cual los padres están excluidos. El analista debe sostener firmemente este espacio, protegiendo la transferencia del niño contra las intrusiones parentales.</p>
+
+                    <p>No se trata de educar a los padres ni de culpabilizarlos. Decirle a una madre "usted es demasiado protectora" solo aumenta su ansiedad y refuerza sus defensas. Se trata, más bien, de escuchar también el sufrimiento de los padres, pero en un espacio diferenciado, o derivarlos a otro analista si su propia problemática invade demasiado el terreno del hijo.</p>
+
+                    <span class="page-marker">Página 19</span>
+                    <h3>El Juego y la Palabra</h3>
+                    
+                    <p>En el análisis de niños, el juego, el dibujo y el modelado ocupan un lugar central. Pero no nos confundamos: el juego no es un fin en sí mismo. No jugamos con el niño para entretenerlo, sino para permitirle poner en escena sus fantasmas. El dibujo de una casa cerrada, de un monstruo devorador o de una guerra interminable, son letras de un discurso que el niño aún no puede articular verbalmente.</p>
+
+                    <p>La intervención del analista consiste en poner palabras allí donde el niño pone actos. "Ese monstruo parece tener mucha hambre", "Ese soldado está solo contra todos". Al nombrar la angustia, la hacemos manejable. La pasamos del registro de lo Real (lo que aterroriza sin nombre) al registro de lo Simbólico (lo que se puede decir y compartir).</p>
+
+                    <p>A veces, el progreso es espectacular. Otras veces, es lento y silencioso. Un niño que era encopréctico (que no controlaba sus heces) puede empezar a "regalar" dibujos al analista. Es el paso del objeto anal (retenido o expulsado violentamente) al objeto de don, al objeto de intercambio social. Es el nacimiento del sujeto cultural.</p>
+
+                    <p>El fin del análisis no es producir un niño modelo, adaptado y sumiso. El fin es que el niño pueda asumir su propia historia, con sus luces y sus sombras, y que pueda decir "Yo" sin tener que mirar de reojo la aprobación de la madre.</p>
+                `
+            },
+            {
+                id: "parte4",
+                title: "Cuarta Parte: El Niño ante la Institución",
+                content: `
+                    <span class="page-marker">Página 24</span>
+                    <h2 class="chapter-title">Cuarta Parte</h2>
+                    <h3>El Diagnóstico Médico como Etiqueta</h3>
+                    
+                    <p>Cuando el niño llega a la institución —sea la escuela especial, el hospital o el centro psicopedagógico—, a menudo llega precedido por un expediente. "Debilidad mental", "carácter inestable", "dislexia". Estas palabras, que pretenden ser descriptivas, tienen un efecto performativo: crean la realidad que nombran. El niño termina identificándose con su etiqueta. "Soy un débil", parece decirnos, "así que no espere nada de mí".</p>
+
+                    <p>El discurso médico tradicional busca clasificar el síntoma, objetivarlo y, si es posible, suprimirlo con medicación o reeducación. El psicoanálisis, en cambio, se pregunta: ¿Qué dice este síntoma? Si tapamos la boca del síntoma con una pastilla o con un ejercicio repetitivo, corremos el riesgo de silenciar al sujeto para siempre. El "débil mental" a menudo no es alguien que carece de inteligencia, sino alguien que ha decidido (inconscientemente) no saber nada, porque saber es demasiado peligroso en su constelación familiar.</p>
+
+                    <span class="page-marker">Página 25</span>
+                    <h3>La Institución como Refugio del Síntoma</h3>
+                    
+                    <p>Las instituciones, paradójicamente, pueden convertirse en aliadas de la enfermedad. Necesitan "enfermos" para funcionar. Un niño que se cura, que se rebela, que empieza a desear cosas distintas, es un elemento disruptivo en un internado o en una clase especial. A menudo he visto cómo la institución se angustia cuando el niño mejora. "Se ha vuelto inmanejable", dicen los educadores cuando el niño deja de ser un objeto pasivo.</p>
+
+                    <p>El analista que trabaja en una institución se encuentra en una posición difícil. Debe trabajar "en contra" de la inercia institucional. Debe crear un espacio —aunque sea simbólico— donde el niño no sea un número de expediente, sino una historia singular. Esto a menudo provoca roces con el equipo médico o pedagógico, que busca resultados rápidos y visibles.</p>
+
+                    <p>La segregación es la tentación constante. Separar a los "normales" de los "anormales" tranquiliza a la sociedad. Pero el niño segregado nos devuelve, como un espejo deformante, la verdad que la sociedad rechaza. Al encerrar al "loco" o al "retrasado", creemos haber encerrado el problema, pero solo hemos desplazado la angustia.</p>
+                `
+            },
+            {
+                id: "parte5",
+                title: "Quinta Parte: El Deseo del Analista",
+                content: `
+                    <span class="page-marker">Página 30</span>
+                    <h2 class="chapter-title">Quinta Parte</h2>
+                    <h3>El Lugar y el Deseo del Analista</h3>
+                    
+                    <p>¿Qué quiere el analista? Esta pregunta es fundamental. Si el analista quiere "curar" a toda costa, si quiere que el niño sea "bueno" y "normal", entonces está ocupando el lugar del educador o del padre ideal. El deseo del analista debe ser otro: debe ser un deseo de saber, un deseo de permitir que surja la verdad del sujeto, aunque esa verdad sea incómoda.</p>
+
+                    <p>El analista debe soportar ser el depositario de los "objetos malos" del niño. El niño puede agredirnos, rechazarnos o ignorarnos. Si reaccionamos desde nuestra propia subjetividad herida, perdemos la partida. Debemos mantenernos en ese lugar tercero, ni cómplices de los padres ni salvadores del niño. Somos el soporte de una transferencia que permite al niño ensayar nuevas formas de relación.</p>
+
+                    <span class="page-marker">Página 31</span>
+                    <h3>El Final del Análisis</h3>
+                    
+                    <p>¿Cuándo termina el análisis de un niño? No necesariamente cuando desaparece el síntoma por el que consultó. A veces el síntoma cae rápido, pero la estructura sigue intacta. El final se perfila cuando el niño ha logrado subjetivar su historia, cuando puede posicionarse ante el deseo del Otro sin quedar aplastado.</p>
+
+                    <p>A menudo, el final es decidido por los padres, precipitadamente, justo cuando las cosas empiezan a moverse de verdad. "Ya está bien", dicen. "Ya obedece". Es el momento en que el analista debe maniobrar con delicadeza para no dejar caer al niño, pero reconociendo también los límites de lo posible en esa estructura familiar.</p>
+
+                    <p>En última instancia, el psicoanálisis de niños nos enseña sobre la condición humana misma. El niño nos muestra, en carne viva, cómo nos constituimos como sujetos a través del lenguaje y del deseo de quienes nos acogieron en este mundo. Curar no es borrar la cicatriz, sino ayudar al sujeto a escribir su propia historia a partir de ella.</p>
+                `
+            }
+        ];
+
+        // UI Logic
+        const readerArea = document.getElementById('readerArea');
+        const bookContent = document.getElementById('bookContent');
+        const chapterList = document.getElementById('chapterList');
+        const sidebar = document.getElementById('sidebar');
+        let currentChapterIndex = 0;
+
+        function renderChapterList() {
+            chapterList.innerHTML = bookData.map((chapter, index) => `
+                <li>
+                    <button 
+                        class="chapter-btn ${index === currentChapterIndex ? 'active' : ''}" 
+                        onclick="loadChapter(${index})"
+                    >
+                        ${chapter.title}
+                    </button>
+                </li>
+            `).join('');
+        }
+
+        function loadChapter(index) {
+            currentChapterIndex = index;
+            const chapter = bookData[index];
+            bookContent.innerHTML = chapter.content;
+            
+            // Scroll to top
+            readerArea.scrollTop = 0;
+            
+            // Update sidebar active state
+            renderChapterList();
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 950) {
+                sidebar.classList.remove('open');
+            }
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+        }
+
+        function changeFontSize(delta) {
+            const style = window.getComputedStyle(document.body);
+            const currentSize = parseFloat(style.fontSize);
+            const newSize = Math.max(14, Math.min(26, currentSize + delta));
+            document.body.style.fontSize = newSize + 'px';
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Initialize
+        renderChapterList();
+        loadChapter(0);
+
+    </script>
+</body>
+</html>
