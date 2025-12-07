@@ -12,7 +12,7 @@
             --sidebar-bg: #f4e4d0;
             --font-main: "Merriweather", "Georgia", serif;
             --font-ui: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --page-width: 800px;
+            --page-width: 900px; /* Ancho aumentado para lectura más cómoda */
         }
 
         * {
@@ -20,7 +20,7 @@
         }
 
         body {
-            background-color: #525659; /* Fondo gris oscuro de la app */
+            background-color: var(--bg-color); /* Fondo beige en toda la pantalla */
             color: var(--text-color);
             font-family: var(--font-main);
             margin: 0;
@@ -41,19 +41,19 @@
         .sidebar {
             width: 300px;
             background-color: var(--sidebar-bg);
-            border-right: 1px solid #c9bda8;
+            border-right: 1px solid #dcc;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease;
             z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             flex-shrink: 0;
         }
 
         .sidebar-header {
             padding: 20px;
-            background: rgba(139, 69, 19, 0.1);
-            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+            background: rgba(139, 69, 19, 0.05);
+            border-bottom: 1px solid rgba(139, 69, 19, 0.1);
         }
 
         .sidebar-header h2 {
@@ -81,7 +81,7 @@
             text-align: left;
             background: none;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 15px;
             cursor: pointer;
             font-family: var(--font-ui);
             font-size: 0.9rem;
@@ -112,8 +112,8 @@
             overflow-y: auto;
             display: flex;
             justify-content: center;
-            background-color: #525659;
-            padding: 40px 20px;
+            background-color: var(--bg-color); /* Fondo beige igual que la página */
+            padding: 0; /* Sin padding para efecto continuo */
             scroll-behavior: smooth;
         }
 
@@ -121,19 +121,19 @@
             background-color: var(--bg-color);
             width: 100%;
             max-width: var(--page-width);
-            min-height: 95vh; /* Asegura que cubra la pantalla */
-            padding: 70px 80px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.5);
-            margin-bottom: 80px;
+            min-height: 100vh;
+            padding: 60px 60px 120px 60px;
+            /* Sin sombra para efecto plano e integrado */
+            box-shadow: none; 
+            margin-bottom: 0;
             position: relative;
-            display: block; /* Importante para evitar colapsos */
-            overflow: hidden; /* Evita que contenido flote fuera */
+            display: block;
         }
 
         /* Typography */
         h1.book-title {
             text-align: center;
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin-top: 40px;
             margin-bottom: 20px;
             color: #222;
@@ -143,7 +143,7 @@
 
         h2.book-author {
             text-align: center;
-            font-size: 1.3em;
+            font-size: 1.4em;
             color: #666;
             font-weight: 300;
             font-style: italic;
@@ -151,28 +151,28 @@
         }
 
         h2.chapter-title {
-            font-size: 2em;
+            font-size: 2.2em;
             color: var(--accent-color);
             border-bottom: 3px double #dcc;
             padding-bottom: 15px;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
             line-height: 1.2;
         }
 
         h3 {
-            font-size: 1.3em;
-            margin-top: 40px;
-            margin-bottom: 15px;
+            font-size: 1.5em;
+            margin-top: 50px;
+            margin-bottom: 20px;
             color: #4a4a4a;
             font-family: var(--font-ui);
             font-weight: 600;
         }
         
         h4 {
-            font-size: 1.1em;
-            margin-top: 25px;
-            margin-bottom: 10px;
+            font-size: 1.2em;
+            margin-top: 30px;
+            margin-bottom: 15px;
             color: #5d4037;
             font-weight: bold;
             font-family: var(--font-ui);
@@ -181,81 +181,89 @@
         }
 
         p {
-            margin-bottom: 1.5em;
+            margin-bottom: 1.6em;
             text-align: justify;
             text-justify: inter-word;
             hyphens: auto;
         }
 
         blockquote {
-            margin: 20px 40px;
+            margin: 30px 40px;
             font-style: italic;
             color: #555;
-            border-left: 3px solid #dcc;
-            padding-left: 15px;
+            border-left: 4px solid #dcc;
+            padding-left: 20px;
+            font-size: 1.1em;
         }
 
         .dedication {
             text-align: right;
             font-style: italic;
-            margin-top: 80px;
+            margin-top: 100px;
             margin-right: 40px;
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: #555;
         }
 
         .page-marker {
             display: block;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #a0a0a0;
             font-family: var(--font-ui);
-            margin: 40px 0;
+            margin: 50px 0;
             border-top: 1px dashed #d0d0d0;
-            padding-top: 10px;
+            padding-top: 15px;
             user-select: none;
         }
 
         .footnotes {
-            margin-top: 60px;
-            padding: 20px;
+            margin-top: 80px;
+            padding: 30px;
             border-top: 1px solid #ccc;
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #444;
-            background-color: rgba(255,255,255,0.4);
-            border-radius: 4px;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 8px;
         }
         
+        .footnotes h4 {
+            margin-top: 0;
+            font-size: 1em;
+        }
+
         .footnotes p {
-            margin-bottom: 0.8em;
+            margin-bottom: 1em;
         }
 
         .dialogue {
-            margin-left: 20px;
+            margin-left: 30px;
             color: #333;
-            border-left: 2px solid #e0d0b8;
-            padding-left: 15px;
+            border-left: 3px solid #e0d0b8;
+            padding-left: 20px;
             font-style: italic;
+            margin-bottom: 1.5em;
         }
 
         /* Controls */
         .controls {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.95);
-            padding: 8px;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
             border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             display: flex;
-            gap: 8px;
+            gap: 10px;
             z-index: 2000;
             backdrop-filter: blur(5px);
+            border: 1px solid #e0e0e0;
         }
 
         .control-btn {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 1px solid #eee;
             background: white;
@@ -263,7 +271,7 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             font-family: var(--font-ui);
-            font-size: 14px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -285,12 +293,12 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
+            padding: 12px 18px;
+            border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             font-family: var(--font-ui);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         /* Mobile */
@@ -303,16 +311,18 @@
             }
             .sidebar.open { transform: translateX(0); }
             .menu-toggle { display: block; }
-            .book-page { padding: 40px 25px; }
+            .book-page { padding: 40px 20px 100px 20px; width: 100%; max-width: 100%; }
             .reader-area { padding: 0; background-color: var(--bg-color); }
-            h1.book-title { font-size: 2em; }
+            h1.book-title { font-size: 2.2em; }
         }
 
         /* Dark Mode */
+        body.dark-mode { background-color: #1a1a1a; }
         body.dark-mode .book-page {
             background-color: #1a1a1a;
             color: #d0d0d0;
         }
+        body.dark-mode .reader-area { background-color: #1a1a1a; }
         body.dark-mode .sidebar {
             background-color: #252525;
             border-right: 1px solid #333;
@@ -328,11 +338,14 @@
         }
         body.dark-mode h2.chapter-title { color: #cdb38b; border-bottom-color: #444; }
         body.dark-mode h3 { color: #bbb; }
+        body.dark-mode h4 { color: #a0a0a0; }
         body.dark-mode blockquote { color: #aaa; border-left-color: #555; }
         body.dark-mode .dedication { color: #888; }
-        body.dark-mode .page-marker { color: #666; border-top-color: #444; }
+        body.dark-mode .page-marker { color: #555; border-top-color: #333; }
         body.dark-mode .footnotes { color: #888; border-top-color: #444; background-color: rgba(255,255,255,0.05); }
         body.dark-mode .dialogue { color: #ccc; border-left-color: #555; }
+        body.dark-mode .controls { background: rgba(40,40,40,0.9); border-color: #444; }
+        body.dark-mode .control-btn { background: #333; color: #eee; border-color: #444; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -368,6 +381,7 @@
                 title: "Portada y Agradecimientos",
                 content: `
                     <div style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="page-marker">Inicio</span>
                         <h1 class="book-title">El niño, su "enfermedad" y los otros</h1>
                         <h2 class="book-author">Maud Mannoni</h2>
                         <div style="text-align: center; margin-top: 20px; font-weight: bold; font-family: var(--font-ui); color: #888;">PRIMER TOMO</div>
@@ -387,46 +401,40 @@
             },
             {
                 id: "prefacio",
-                title: "Prefacio: El psicoanálisis de niños",
+                title: "Prefacio",
                 content: `
+                    <span class="page-marker">Prefacio</span>
                     <h2 class="chapter-title">Prefacio</h2>
                     <h3>El psicoanálisis de niños a partir de Freud</h3>
                     
                     <p>El psicoanálisis de niños es psicoanálisis. Tal la convicción de Freud al ocuparse en 1909 (1) de la cura de un niño de cinco años afectado por una neurosis fóbica. La adaptación de la técnica a la situación particular que representa para el adulto el aproximarse a un niño, no altera el campo sobre el cual opera el analista: ese campo es el del lenguaje (incluso cuando el niño todavía no habla). El discurso que rige abarca a los padres, al niño y al analista: se trata de un discurso colectivo constituido alrededor del síntoma que el niño presenta.</p>
-                    
                     <p>El malestar de que se habla es objetivable (en la persona del niño) pero la queja de los padres, aunque su objeto sea el niño real, también implica la representación que de la infancia tiene el adulto. La sociedad le confiere al niño un status puesto que le encomienda, sin que él lo sepa, la realización del futuro del adulto: la misión del niño consiste en reparar el fracaso de los padres, e incluso en concretar sus sueños perdidos. De este modo, las quejas de los padres con respecto a su descendencia nos remiten ante todo a la problemática propia del adulto. Tales características vuelven a encontrarse cuando, en el análisis, el adulto nos habla de su pasado. Lo que nos expone no es tanto una realidad vivida como un sueño frustrado.</p>
-
                     <p>En el psicoanálisis tal como se constituyó al comienzo, la infancia sólo figuraba (en lo que de ella informaban los adultos) como recuerdos reprimidos. No se trataba tanto de un pasado real como de la manera en que el sujeto lo sitúa dentro de cierta perspectiva: al reconstruir su infancia, el sujeto reordena un pasado de acuerdo con su deseo. Lo mismo sucede con el niño pequeño que, en su juego reordena su mundo presente o pasado de acuerdo con lo que quiere. Es entonces cuando surge su decir que apunta a un adulto imaginario o real (incluso a un imaginario compañero). El discurso que tiene lugar en psicoanálisis, en el caso del niño y en el adulto, nos remite pues no tanto a una realidad como a un mundo de deseos y de ensoñaciones.</p>
-                    
-                    <span class="page-marker">Página 3</span>
-
                     <p>Esta verdad fue perdida de vista, desde 1918, por la primera analista que se ocupó de niños (Hug Hellmuth), y de este modo desde sus comienzos el análisis se desarrolló en dos direcciones opuestas: en una de ellas los descubrimientos de Freud se mantienen por completo (sobre todo el Edipo y la transferencia); en la otra, se produce un alejamiento de tales descubrimientos con el fin de modificar una realidad: el niño se convierte en el soporte de las buenas intenciones que los adultos alimentan con respecto a él.</p>
-
-                    <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker (3), quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo.</p>
-                    
-                    <p>Tal actitud (que, con modalidades diferentes, podríamos encontrar también en la actualidad) llevó a Freud a denunciar el peligro de la "falsa ciencia" contraria a toda genuina investigación. En su tesis Debacker planteaba un diagnóstico, el de anemia cerebral (ésta había sido la causa de las alucinaciones demoníacas del niño): ese diagnóstico no tenía mayor relación con la historia clínica del enfermo (estado fóbico y terrores nocturnos de un muchacho de 13 años). En su informe el autor no había tomado en cuenta las palabras del sujeto, aunque estaban presentes en su observación.</p>
-                    
+                    <p>Sucede que el psicoanalista que se enfrenta con el niño participa de la cura con sus propios prejuicios (su contratransferencia). Ya antes de Freud sucedía que el médico no quisiera escuchar lo que el niño no solo le significaba a través de su síntoma sino incluso lo que trataba de poner en palabras. Freud nos da el ejemplo de la tesis de medicina sostenida en 1881 por Debacker (3), quien presentaba sus conclusiones dejando de lado todos los datos clínicos registrados durante la observación. En lugar de ellos aparecían teorías totalmente desvinculadas del discurso del enfermo. Tal actitud (que, con modalidades diferentes, podríamos encontrar también en la actualidad) llevó a Freud a denunciar el peligro de la "falsa ciencia" contraria a toda genuina investigación.</p>
+                    <p>En su tesis Debacker planteaba un diagnóstico, el de anemia cerebral (ésta había sido la causa de las alucinaciones demoníacas del niño): ese diagnóstico no tenía mayor relación con la historia clínica del enfermo (estado fóbico y terrores nocturnos de un muchacho de 13 años). En su informe el autor no había tomado en cuenta las palabras del sujeto, aunque estaban presentes en su observación.</p>
                     <p>Alguien que no estuviese iniciado -nos dice Freud- se habría desempeñado mejor: habría retenido las palabras del niño presa de una intensa angustia persecutoria. Alberto dio la clave del desorden somático el día en que estuvo curado, y esa curación sobrevino en el momento en que el niño pudo verbalizar el sentido de su enfermedad, es decir designar con palabras aquello que el síntoma tenía la misión de encubrir. Por el rodeo de las acusaciones alucinatorias pudo el niño hacer emerger la "palabra primera", a saber, la confesión (cargada de culpabilidad) de las actividades masturbatorias. Las palabras alucinadas o acusadores del delirio son generalmente palabras escuchadas pero olvidadas, que dejan su huella en el nivel del síntoma. En el análisis se llega a aislar la marca de las palabras (dichas o no dichas) sobre lo somático (4). En este caso el niño fue su propio médico.</p>
+                    <p>Como clínico, Freud ante todo está a la escucha de lo que habla en el síntoma: solo este camino conduce hacia la posibilidad de una actitud analítica frente a una neurosis y, en particular, frente a una neurosis infantil. A partir de ese punto, las investigaciones de Freud seguirán ante todo dos direcciones diferentes: por una parte, profundiza el sentido del síntoma, al que concibe como una palabra (5); pero, por otra parte, una creencia (no científica) en el origen fisiológico de las perturbaciones psíquicas le hace dirigir la atención hacia la importancia que es necesario atribuir al traumatismo en la génesis de las neurosis (1896).</p>
+                    <p>Sin embargo, el análisis de las histéricas le permite descubrir pronto que la infancia de la que hablan no es nunca la infancia real, que los traumatismos a que aluden pueden resultar muy bien ficticios. Entonces descubre que una palabra, incluso cuando es engañosa, constituye como tal la verdad del sujeto: su decir tiene que ser integrado en el discurso del inconsciente. Los recuerdos de infancia y los "traumatismos" adquieren un sentido cuando se los sitúa con relación al deseo del sujeto.</p>
+                    <p>Estos descubrimientos, pues no nos remiten ni a una infancia real ni a la historia del desarrollo del individuo, sino por cierto al lenguaje del inconsciente. Sin embargo, a veces las nociones freudianas fueron el producto de la búsqueda de un paralelismo psico-físico: de ese modo se creía que podría explicarse mejor el proceso de "maduración" del niño.</p>
                     
-                    <p>Fue necesario que Freud descubriera el psicoanálisis para que se le restituyera un sentido a lo que, para la ciencia oficial, carecía de él. La cuestión de saber quién, en el conflicto, detenta la verdad (si el niño o el adulto), se plantea todavía hoy, a pesar de los descubrimientos freudianos. Se plantea cada vez que un niño es llevado al analista; este último corre siempre el riesgo de buscar la verdad del lado de la realidad (la de los padres) y de desconocer esa otra verdad que surge de la palabra del niño. Al rechazar el sentido del síntoma (la verdad del sujeto) el analista se convierte entonces en el mejor aliado de la represión (la de los padres), cuando su misión consiste en levantarla.</p>
-
                     <div class="footnotes">
-                        <h4>Notas</h4>
+                        <h4>Notas del Prefacio</h4>
                         <p>1. S. Freud, "Historia de la fobia de un niño de cinco años.</p>
                         <p>2. Hug Hellmuth.</p>
                         <p>3. Citado por Freud en "La interpretación de los sueños".</p>
                         <p>4. Los lingüistas oponen la palabra (habla) al lenguaje o la lengua como la expresión "tomar palabra". Aquí ese término se toma en el sentido en que se trata de la palabra dicha o no dicha, que ha marcado -o cuya ausencia ha marcado- al sujeto oyente. Esta marca se vuelve a encontrar en el síntoma, ya sea éste psicológica o somático.</p>
-                        <p>5. Presupone que los efectos de los mecanismos de desplazamientos y de condensación aparecen en el discurso del sujeto en función de leyes precisas.</p>
+                        <p>5. Presupone que los efectos de los mecanismos de desplazamientos y de condensación aparecen en el discurso del sujeto en función de leyes precisas. En "La interpretación de los sueños" u en el análisis del Hombre de las Ratas se utilizará ese desciframiento del discurso inconsciente. De esta manera, somos introducidos en la lectura del síntoma (obsesivo o Histérico) que el sujeto nos confía.</p>
                         <p>6. S. Freud. "Historia del movimiento psicoanalítico".</p>
                         <p>7. "Mucho de que tú hubiese nacido... Yo sabía", etc.</p>
                         <p>8. Alrededor de significantes: el nombre del Padre, el falo, etc.</p>
                         <p>9. Del deseo del padre de Juanito por Freud, y del interés teórico que su "caso" representa para las investigaciones de Freud.</p>
-                        <p>10. Al rechazar, en lo real, a su hijo, la madre refrendaba su imposibilidad de renunciar al objeto imaginario que constituía para ella su hijo en cuanto sustituto fálico.</p>
+                        <p>10. Al rechazar, en lo real, a su hijo (y después a todos los hombres), la madre refrendaba su imposibilidad de renunciar al objeto imaginario que constituía para ella su hijo en cuanto sustituto fálico.</p>
                         <p>11. Deseo (Wunch, Wish). En la Traumdeutung, Freud distingue entre el deseo y la tendencia.</p>
-                        <p>12. Melanie Klein describe de qué manera el niño proyecta su agresión.</p>
+                        <p>12. Melanie Klein describe de qué manera el niño proyecta su agresión -en la etapa cul,inante del complejo de Edipo- sobre aquel de los ádres que, en su fantasma, se convierte en unogro introyectado y como tal forma su superyó.</p>
                         <p>13. Cf. G. Rosolato y Widlocher, "Karl Abraham".</p>
                         <p>14. D. W. Winnicot, "Psychoanalisis and the Sense of Guilt".</p>
-                        <p>15. J. Lacan, seminario del 25 de enero de 1959.</p>
+                        <p>15. J. Lacan, seminario del 25 de enero de 1959 (inédito).</p>
                         <p>16. Ya antes de 1920 Biswanger fue el primero en introducir el psicoanálisis en la clínica psiquiátrica.</p>
                         <p>17. R. Laing, The Self and Others.</p>
                         <p>18. S. Freud, "Esquema del psicoanálisis".</p>
@@ -434,7 +442,7 @@
                         <p>20. Lacan aborda este problema como la relación del sujeto con el significante.</p>
                         <p>21. S. Freud "El poeta y la fantasía".</p>
                         <p>22. S. Freud. "Más allá del principio del placer".</p>
-                        <p>23. Cf. los trabajos de Adilf Woltamn en Child Psychotherapy.</p>
+                        <p>23. Cf. los trajos de Adilf Woltamn en Child Psychotherapy.</p>
                         <p>24. Dell Lebo, en Child Psychotherapy, p. 430.</p>
                         <p>25. Adolf G. Woltmann, "Varietes of play tecniques".</p>
                         <p>26. J. Lacan. cf. "Situation' de la Psychanalyse en 1950", Ecrits, p. 459.</p>
@@ -442,9 +450,10 @@
                 `
             },
             {
-                id: "cap1",
-                title: "Capítulo 1: El síntoma o la palabra",
+                id: "parte1",
+                title: "Primera Parte: El síntoma o la palabra",
                 content: `
+                    <span class="page-marker">Primera Parte</span>
                     <h2 class="chapter-title">Primera Parte</h2>
                     <blockquote>Hemos entendido, cuando formamos parte de lo que se nos dice.<br>Martin Heidegger.</blockquote>
                     
@@ -457,31 +466,41 @@
 
                     <p>De este modo, la aportación de Freud reside ante todo en indicarnos que, en un análisis, no se trata de un individuo que se enfrenta con la realidad ni de su conducta, sino por el contrario, del desconocimiento imaginario del yo, es decir de la sucesivas formas de identificaciones, de engaños y de alienaciones que expresan una defensa frente al advenimiento de la verdad del sujeto.</p>
 
-                    <p>El psicoanálisis de niños no difiere en su espíritu (en su escucha) del psicoanálisis de adultos; pero al adulto, incluso tratándose de un psicoanálisis, cuando aborda los problemas de la infancia, a menudo se le interpone la idea (las proyecciones imaginarias) que se hace de ella. Todo estudio sobre la infancia implica al adulto, a sus reacciones y a sus prejuicios.</p>
+                    <p>El psicoanálisis de niños no difiere en su espíritu (en su escucha) del psicoanálisis de adultos; pero al adulto, incluso tratándose de un psicoanálisis, cuando aborda los problemas de la infancia, a menudo se le interpone la idea (las proyecciones imaginarias) que se hace de ella. (El propio Freud no está protegido contra los errores en ese terreno.) Todo estudio sobre la infancia implica al adulto, a sus reacciones y a sus prejuicios.</p>
 
-                    <p>Observaciones efectuadas por Francoise Dolto (2) en niños normales de 20 meses presas de una aguda tensión emocional por el nacimiento de un hermanito, nos muestran hasta qué punto el adulto forma parte del conflicto. Lo que demanda el niño desesperado es la palabra precisa, esa "palabra maestra" (3) que invoca en estado de crisis, para que a través de ella pueda conquistarse el dominio sobre algo. El niño reclama el derecho de comprender lo absurdo que le sucede en determinada reacción agresiva suya.</p>
+                    <p>Observaciones efectuadas por Francoise Dolto (2) en niños normales de 20 meses presas de una aguda tensión emocional por el nacimiento de un hermanito, nos muestran hasta qué punto el adulto forma parte del conflicto. Lo que demanda el niño desesperado (por la brusca pérdida de todo punto de referencia identificatorio) es la palabra precisa, esa "palabra maestra" (3) que invoca en estado de crisis, para que a través de ella pueda conquistarse el dominio sobre algo: el niño reclama el derecho de comprender lo absurdo que le sucede en determinada reacción agresiva suya. El adulto raramente observa, solo reprueba una intención allí donde el niño presenta un comportamiento que requiere ser descifrado. Por no haber podido leer su sentido, el adulto deja al niño en la estacada con un deseo de conocimiento (de palabra) que antes sus reivindicaciones y rebeldías camuflaban.</p>
+
+                    <p>En el caso de Juan, la autora nos relata las reacciones del niño durante los veintiún días subsiguientes al nacimiento del hermanito. Asistimos a una desesperación que se expresa a través de la incontinencia, la encopresia y el tartamudeo. A medida que la hostilidad y los celos se expresan vemos cómo desaparecen los síntomas. El tartamudeo cede el vigésimoprimer día, después que el niño colocó en la cama de la sirvienta una muñeca de celuloide llamada Gricha (nombre del hermano); lincha a esa muñeca delante de la madre y de ese modo la hace cómplice del asesinato (simbólico) del hermano que había venido a ocupar su lugar.</p>
+
+                    <p>En el caso de Gricha, vemos un niño presa de una desesperación idéntica a propósito del nacimiento de su hermanita. El niño reacciona oponiéndose, rehusando comer, manifestando incontinencia y tartamudeo. En el vigésimo primer día el niño se mete en la cama del bebe haciendo la mímica —según nos dice la madre— correspondiente a un débil mental, con el aspecto de un tonto: "ma to tati" (moi comme Katy-yo como Katy-). Desea que su madre esté junto a él. El autor nos explica que igualmente mediante una especie de linchamiento el niño saldrá victorioso de su tartamudeo (y de su conflicto).</p>
+
+                    <p>En una observación similar, en el caso de un niño neurotizado por una experiencia del mismo tipo, Françoise Dolto anota que el malentendido se formó en el nivel del lenguaje, puesto que el adulto educador se mostró más preocupado por corregir un comportamiento de celos que por responder a las preguntas pendientes. El niño, reprobado en las intenciones que se le atribuían, perdido en sus posibilidades de puntos de referencia identificatorios, fue presa de un desorden interno que sintió como amenazador. Colocado en una posición persecutoria, ese niño de dos años -Roberto- se volvió peligroso para los demás. En tres días, por la sola virtud de las palabras precisas que supo pronunciar una madre no neurótica (con la que F. Dolto había tenido una entrevista) pudo el niño salir curado de la crisis y conquistar de golpe su dominio en el campo del lenguaje.</p>
 
                     <h4>El caso de Juanito</h4>
-                    <p>En el célebre estudio de Freud sobre Juanito (4), lo que me interesa no es el análisis del caso sino los fragmentos de observación del padre, que ponen de manifiesto las pantallas que el adulto levanta para que el niño permanezca en cierto no-saber. La observación se inicia con una interrogación de Juanito dirigida a su madre: "Mamá, ¿tú también tienes una cosita para hacer pis?".</p>
-                    
-                    <p>La historia de Juanito es la de un niño enfrentado con el mito del adulto. Es la palabra del adulto la que habrá de marcar y determinará las modificaciones ulteriores de su personalidad. El niño aparece como el soporte de los fantasmas y del voyeurismo de los adultos. Se mueve en un mundo en el cual lo no-dicho expresa una dificultad, un drama en la pareja de los padres, drama muy claramente percibido por el niño.</p>
+                    <p>Este es el problema que quisiera tratar de elucidar a propósito del célebre estudio de Freud sobre Juanito (4). Lo que me interesa no es el análisis del caso sino los fragmentos de observación del padre, que ponen de manifiesto las pantallas que el adulto levanta para que el niño permanezca en cierto no-saber. La observación se inicia con una interrogación de Juanito dirigida a su madre: "Mamá, ¿tú también tienes una cosita para hacer pis?" Este término ambiguo (dado que designa al mismo tiempo al órgano del funcionamiento urinario y al sexo, lugar de deseo para el niño y para la niña) es el que la madre utilizó.</p>
+
+                    <p>La historia de Juanito es la de un niño enfrentado con el mito del adulto. Es la palabra del adulto la que habrá de marcar y determinará las modificaciones ulteriores de su personalidad. El niño aparece como el soporte de los fantasmas y del voyeurismo de los adultos. Se mueve en un mundo en el cual lo no-dicho expresa una dificultad, un drama en la pareja de los padres, drama muy claramente percibido por el niño. El factor traumatizante tal como se lo puede vislumbrar en una neurosis, no es nunca un acontecimiento de por sí real, sino de lo que sobre éste han dicho o callado quienes están a su alrededor. Son las palabras o ausencias asociadas con la escena penosa las que le dan al sujeto los elementos que impresionarán su imaginación.</p>
 
                     <h4>El caso de Sam (Erikson)</h4>
-                    <p>Erikson (8) nos brinda una notable demostración de esto en un estudio acerca de una crisis que en primera instancia había sido denominada "neurológica" en un niño de cinco años, Sam. Sam tiene tres años cuando su madre lo descubre atacado por una crisis semejante a la crisis cardíaca de que murió su abuela cinco días antes. El médico establece un diagnóstico de epilepsia. A través del caso de Sam, Erikson se esfuerza por mostrarnos de qué manera en el origen de un síntoma aparentemente orgánico es posible hacer surgir el acontecimiento psicológico perturbador.</p>
+                    <p>Erikson (8) nos brinda una notable demostración de esto en un estudio acerca de una crisis que en primera instancia había sido denominada "neurológica" en un niño de cinco años, Sam. A través de la presentación del caso, el autor se esfuerza por mostrarnos de qué manera en el origen de un síntoma aparentemente orgánico es posible hacer surgir el acontecimiento psicológico perturbador.</p>
 
-                    <h4>2.</h4>
-                    <p>Si bien Erikson, gracias a su intuición clínica, pudo escapar a una actitud estrechamente médica en la que la interrogación se dirige a los hechos más que al ser, sucede en cambio con otros teóricos, no liberados de cierto pensamiento filosófico heredado del siglo XIX, que sus concepciones teóricas llegan a obstaculizar la aprehensión correcta de un caso. Los vemos interrogar una "realidad" humana y una conducta, divididos como están entre cierto determinismo biológico y las teorías culturalistas.</p>
+                    <p>Erikson comienza la cura dos años después del comienzo de las perturbaciones, y anota las siguientes etapas:</p>
+                    <p>1) Durante una sesión con el analista, el niño, furioso por haber perdido en un partido de dominó, le arroja a Erikson un objeto en la cara; entonces empalidece, hasta el borde del vómito. Recuperando el control, dice: "Continuemos". Erikson le da (a través de la relación transferencial) la interpretación de su malestar:</p>
+                    <p>a) "Si deseabas ver los puntos del dominó en la caja que hiciste hubieses tenido que meterte dentro de esa cajita, como un muerto en un ataúd".</p>
+                    <p>b) Puesto que el niño contestó: "Sí", Erikson prosigue: "Quizá tengas miedo de morir porque me atacaste".</p>
+                    <p>c) "¿Le parece?", le dice Sam. Y Erikson agrega: "Por supuesto que no", y establece un paralelo con la muerte de la abuela y el miedo de Sam de que se haya muerto por su culpa. El niño está de acuerdo.</p>
 
-                    <p>En "Un caso de psicosis infantil" (22), vemos hasta qué punto ciertas concepciones teóricas pueden llegar a obstaculizar al analista en su escucha. Preocupado por su propia idea acerca de cierta situación, capta un discurso completo pero deja escapar su sentido. El discurso del niño es captado como un hecho experimental, es objetivado para ser sometido luego al juicio seguro del médico.</p>
+                    <p>En mi presentación del caso de Sam creo haber puesto de manifiesto que lo que está en juego no es -como parece creerlo Erikson- la Sociedad. El problema no reside en la situación de una familia judía en un medio "gentil": se trata del vínculo madre-niño en la relación fantasmática de la madre. Esta situación particular del niño no se le escapa a Erikson cuando escucha a esta familia como clínico. Concede importancia a la palabra perdida, a lo no dicho, sigue una pista segura a partir de temas que tienen importancia en la madre y en el niño; pero cuando elabora su teoría abandona la clínica; aquélla no aparece nunca como la prolongación del texto que nos ofrece.</p>
 
                     <div class="footnotes">
                         <h4>Notas</h4>
                         <p>1. Simbólico como se sabe. Lacan distingue entre lo simbólico, lo imaginario y lo real.</p>
-                        <p>2. Cf. F. Dolto, "Hypotheses nouvelles concernant les réactions de jalousie a la naissance dún puiné".</p>
+                        <p>2. Cf.F. Dolto, "Hypotheses nouvelles concernant les réactions de jalousie a la naissance dún puiné".</p>
                         <p>3. Pronunciada por un niño de cinco años, según informa F. Dolto.</p>
-                        <p>4. S. Freud "Historiales clínicos".</p>
+                        <p>4. S. Freud "Historiales clínicos". Las reflexiones que aquí expongo...</p>
                         <p>8. Erik H. Erikson. infancia y sociedad, cit.</p>
                         <p>22. S. Lebovici u J. McDougall, Un cas de psychose infantile.</p>
+                        <p>25. Sammy niño tildado de esquizofrénico...</p>
                     </div>
                 `
             },
@@ -489,6 +508,7 @@
                 id: "cap2",
                 title: "Capítulo 2: La transferencia",
                 content: `
+                    <span class="page-marker">Capítulo 2</span>
                     <h2 class="chapter-title">Capítulo 2</h2>
                     <h3>La transferencia en Psicoanálisis de niños. Problemas actuales</h3>
                     
@@ -497,26 +517,23 @@
                     <p>Me propongo interrogar ante todo las manifestaciones de la neurosis de transferencia, tal como fueron desentrañadas en dos textos (2). He de detenerme en un momento de la cura. Lo que tienen en común los casos de Joy y de Dottie es la manera en que el analista, los padres y el niño resultan, en cierta etapa del análisis, arrastrados a un mismo campo de juego, en una situación de angustia.</p>
 
                     <h4>El caso de Joy</h4>
-                    <p>Joy, de once años, es una seudo débil mental. La autora nos muestra que la confesión de un deseo inconsciente escandirá las etapas de la transferencia y marcará los primeros progresos de la niña en la cura. Joy formula luego demandas orales según una modalidad cada vez más regresiva.</p>
+                    <p>Joy, de once años, es una seudo débil mental. La autora nos muestra que la confesión de un deseo inconsciente (el anhelo de tener un pene, la negación de la diferencia de los sexos, los deseos de castración, todos asociados con las dificultades del cálculo) escandirá las etapas de la transferencia y marcará los primeros progresos de la niña en la cura. Joy formula luego demandas orales según una modalidad cada vez más regresiva, mientras que en la vida se manifiesta una sed de saber que alterna con una prohibición de recibir.</p>
                     
-                    <p>Surge el episodio del teléfono, que aclara qué es lo que está en juego en un momento preciso de la situación transferencial. Joy luego de haber traducido en la transferencia los celos y sus reivindicaciones, expresa su deseo de ser la única. La ausencia de los padres en la realidad hizo surgir un daño imaginario que la niña trata de colmar formulando demandas cada vez más exigentes dirigidas a la analista.</p>
+                    <p>Surge el episodio del teléfono, que aclara qué es lo que está en juego en un momento preciso de la situación transferencial. Joy luego de haber traducido en la transferencia los celos y sus reivindicaciones, expresa su deseo de ser la única. La ausencia de los padres en la realidad hizo surgir un daño imaginario que la niña trata de colmar formulando demandas cada vez más exigentes dirigidas a la analista. A la vuelta de una de tales ausencias, la niña informa a la analista de su mal estado de salud.</p>
 
                     <h4>El caso de Dottie</h4>
-                    <p>Si Joy juega con su llamada, Dottie (siete años) (3) por su parte se convierte en víctima de una fobia a los perros en la misma casa de su analista. El día en que la niña abandona las perturbaciones del comportamiento que habían motivado su entrada en el análisis, la madre hace una depresión. Entonces Dottie desarrolla otros síntomas.</p>
+                    <p>Si Joy juega con su llamada, Dottie (siete años) (3) por su parte se convierte en víctima de una fobia a los perros en la misma casa de su analista. El día en que la niña abandona las perturbaciones del comportamiento que habían motivado su entrada en el análisis, la madre hace una depresión. Entonces Dottie desarrolla otros síntomas (tics primero y luego miedo a los perros). Un episodio fóbico agudo le impide a la niña dejar la casa de la analista para regresar a la de sus padres.</p>
 
-                    <p>La transferencia, en el análisis de Dottie, expresa una situación de defensa contra la angustia tanto en la casa como en la escuela o en el análisis. Al reducir la noción de transferencia a una referencia directa a la persona misma del analista, S. F. se vedó la posibilidad de poner de manifiesto el elemento simbólico incluido en la relación transferencial.</p>
+                    <p>La resistencia es legible en cada uno de los términos (niña, madre y analista). Cada uno tiene miedo de otro. Cada uno se encuentra bajo el efecto imaginario de un peligro que situa en la realidad.</p>
 
-                    <h4>Conclusiones sobre la transferencia</h4>
-                    <p>El descubrimiento que hace Freud en 1897 (32) consiste en haber sabido vincular la transferencia con la resistencia concebida como obstáculo, en el discurso del sujeto, para la confesión de un deseo inconsciente.</p>
-                    
-                    <p>En el psicoanálisis de niños, la cuestión no consiste en saber si el niño puede o no transferir sobre el analista sus sentimientos hacia padres con los que todavía vive, sino en lograr que el niño pueda salir de cierta trama de engaños que va urdiendo con la complicidad de sus padres. Esto solo puede realizarse si comprendemos que el discurso que se dice es un discurso colectivo: la experiencia de la transferencia se realiza entre el analista, el niño y los padres.</p>
+                    <p>La transferencia, en el análisis de Dottie, expresa una situación de defensa contra la angustia tanto en la casa como en la escuela o en el análisis. Al reducir la noción de transferencia a una referencia directa a la persona misma del analista, S. F. se vedó la posibilidad de poner de manifiesto el elemento simbólico incluido en la relación transferencial (la solución de su fobia fue hallada por Dottie en los mitos).</p>
 
                     <div class="footnotes">
                         <h4>Notas</h4>
-                        <p>1. Comunicación a la Schweizerische Gesellschaft der Psychotherapeuten für Kinder und Jugendliche, 29 de enero de 1966.</p>
-                        <p>2. Sara Kut, "Changing Patterns in the Analysis of an Eleven Year Old Girl".</p>
-                        <p>3. Selma H. Fraiberg, "Clinical Notes on the Nature of Transference in Child Analysis".</p>
-                        <p>32. Freud llamaba a Fliess su otro yo.</p>
+                        <p>1. Comunicación a la Schweizerische Gesellschaft der Psychotherapeuten...</p>
+                        <p>2. Sara Kut, "Changing Patterns in the Analysis of an Eleven Year Old Girl"...</p>
+                        <p>3. Selma H. Fraiberg, "Clinical Notes on the Nature of Transference in Child Analysis"...</p>
+                        <p>32. Freud llamaba a Fliess su otro yo...</p>
                     </div>
                 `
             },
@@ -524,22 +541,23 @@
                 id: "cap3",
                 title: "Capítulo 3: Psicoterapia de las psicosis",
                 content: `
+                    <span class="page-marker">Capítulo 3</span>
                     <h2 class="chapter-title">Capítulo 3</h2>
                     <h3>La psicoterapia de las psicosis</h3>
                     
-                    <p>En 1896 (1) Kraepelin describe la demencia precoz como entidad nosológica. Considera irremediable el profundo deterioro de las facultades intelectuales que se manifiesta en esta enfermedad. Quince años más tarde, E. Bleuler vuelve a cuestionar toda la nosografía clásica. Además de no parecerle evidente el proceso de deterioro esquizofrénico, está convencido de que el enfermo se burla de su médico.</p>
+                    <p>En 1896 (1) Kraepelin describe la demencia precoz como entidad nosológica. Considera irremediable el profundo deterioro de las facultades intelectuales que se manifiesta en esta enfermedad (2). Quince años más tarde, E. Bleuler vuelve a cuestionar toda la nosografía clásica. Además de no parecerle evidente el proceso de deterioro esquizofrénico, está convencido de que el enfermo se burla de su médico. Ilustra esta tesis con numerosos ejemplos clínicos (3).</p>
 
-                    <p>La orientación de los trabajos de los psicoanalistas sobre la psicosis infantil sigue siendo con frecuencia esencialmente descriptiva (salvo la escuela kleiniana). En rigor, esas investigaciones se aproximan por su forma a las investigaciones psiquiátricas clásicas.</p>
+                    <p>La orientación de los trabajos de los psicoanalistas sobre la psicosis infantil sigue siendo con frecuencia esencialmente descriptiva (salvo la escuela kleiniana). En rigor, esas investigaciones se aproximan por su forma a las investigaciones psiquiátricas clásicas (5).</p>
 
                     <h4>El enfoque de Laing</h4>
-                    <p>Laing (7) insiste en un hecho actualmente admitido por todos: que en medicina no hay asunto más controvertido que el diagnóstico de esquizofrenia. La psiquiatría, nos dice, se ocupó del problema de un comportamiento social juzgado anormal. Laing nos muestra a través de numerosos ejemplos clínicos que los síntomas catatónicos y paranoides, el empobrecimiento afectivo, las alucinaciones auditivas, el retraimiento autístico, aparecen como un eco del discurso de los padres.</p>
+                    <p>Laing (7) insiste en un hecho actualmente admitido por todos: que en medicina no hay asunto más controvertido que el diagnóstico de esquizofrenia. La psiquiatría, nos dice, se ocupó del problema de un comportamiento social juzgado anormal; ese comportamiento fue clasificado en síntomas y signos de enfermedad o en síntomas presuntamente patológicos. Laing nos muestra a través de numerosos ejemplos clínicos que los síntomas catatónicos y paranoides, el empobrecimiento afectivo, las alucinaciones auditivas, el retraimiento autístico, aparecen como un eco del discurso de los padres.</p>
 
                     <h4>Casos clínicos: Christiane, León, Luciano, Sofía</h4>
-                    <p>En este capítulo se analizan varios casos graves. Christiane, de seis años, manifiesta un deseo de autonomía, pero su madre interviene en el plano de lo real para imposibilitar cualquier ruptura. Luciano, de 14 años, deja escapar un discurso que impresiona por sus entonaciones musicales ("¿No hay veneno?, no me gusta estar muerto").</p>
+                    <p>En este capítulo se analizan varios casos graves. Christiane, de seis años, manifiesta un deseo de autonomía, pero su madre interviene en el plano de lo real para imposibilitar cualquier ruptura. Induce la queja somática de su hija mediante enemas, medicamentos dados a escondidas, sin que el medico lo sepa. Espía las heces, vigila la comida. La niña no puede escapar: porque si escapara perdería a su madre.</p>
+                    
+                    <p>Luciano, de 14 años, deja escapar un discurso que impresiona por sus entonaciones musicales. Detenido frente a mí, con la mirada fija, deja brotar palabras con ritmo entrecortado y tono agudo; por instantes se detiene en una nota grave, un murmullo inaudible... y luego prosigue, como un disco que gira (15). "¿No hay veneno?, no me gusta estar muerto, no me gusta estar muerto, no me moriré... el jueves."</p>
 
                     <p>Resumamos. La hipótesis de una afección neonatal había sido propuesta en los casos de Sofía, Emilio, Christiane y León: el factor orgánico parecía estrechamente vinculado con las perturbaciones psicógenas. En la cura, sin embargo, fue posible en muchos casos desechar la hipótesis de organicidad en beneficio del factor psicógeno únicamente.</p>
-
-                    <p>El anhelo sangriento (o el deseo inconsciente de que el niño siga enfermo) existe de manera franca o disimulada; en ambos casos, vimos que no hay lugar para un sujeto en la palabra materna que el niño escucha. Cuando los padres se dirigen al analista por su niño enfermo, al hablar de éste indirectamente hablan de sí mismos.</p>
 
                     <div class="footnotes">
                         <h4>Notas</h4>
@@ -553,6 +571,7 @@
                 id: "parte2_cap4",
                 title: "Segunda Parte: Pablo",
                 content: `
+                    <span class="page-marker">Segunda Parte</span>
                     <h2 class="chapter-title">Segunda Parte</h2>
                     <h3>Capítulo 4: Pablo o la palabra del médico</h3>
                     
@@ -560,7 +579,7 @@
 
                     <p>El último de una familia con cinco hijos, Pablo vino al mundo el día en que el mayor de éstos se casaba. Embarazo no deseado. La madre se sintió manifiestamente culpable por estar encinta otra vez a su edad.</p>
 
-                    <p>A la edad de dieciocho meses, crisis "convulsivas" provocan una consulta psiquiátrica: "Este niño, dice el médico, la quebrantará, señora; si es que usted no lo quebranta a él."</p>
+                    <p>A la edad de dieciocho meses, crisis "convulsivas" provocan una consulta psiquiátrica: "Este niño, dice el médico, la quebrantará, señora; si es que usted no lo quebranta a él." A cada crisis, según la expresión de la madre, "lo pasaban por bromuro". El niño reacciona con una erección con masturbación.</p>
 
                     <p>La enfermedad fue utilizada por Pablo como un signo destinado a suscitar, más allá de los cuidados reales, el deseo materno. Pablo exigía de su madre que ésta lo colmase, pero al mismo tiempo, como sujeto, se sentía desposeído. En su relación con su madre, Pablo se situaba alternativamente en el puesto del superjefe de mamá y en el de un Pablo enfermo.</p>
 
@@ -571,6 +590,7 @@
                 id: "parte2_cap5",
                 title: "Capítulo 5: Carola",
                 content: `
+                    <span class="page-marker">Capítulo 5</span>
                     <h2 class="chapter-title">Capítulo 5: Carola o el silencio de la madre</h2>
                     
                     <p>Una pareja muy joven está allí, silenciosa, frente a mí. Vienen por su hija Carola, de seis años. La mujer toma de la mano al marido, se la siente tensa, al borde del llanto. El hombre tiene rasgos de adolescente, parece ausente. Reviso la historia clínica que me remitió el hospital. El diagnóstico es de esquizofrenia (mutismo psicógeno). Se aconseja tratamiento psicoanalítico. La madre tiene apuro de que "se haga algo".</p>
@@ -594,6 +614,7 @@
                 id: "parte2_cap6",
                 title: "Capítulo 6: Guido",
                 content: `
+                    <span class="page-marker">Capítulo 6</span>
                     <h2 class="chapter-title">Capítulo 6: Guido o la muerte de su padre</h2>
                     
                     <p>En el hospital me piden que examine el caso de Guido, de seis años. El diagnóstico de oligofrenia parece no dejar lugar a dudas, pero también forma parte del cuadro clínico un elemento esquizofrénico. Todos están de acuerdo en que el déficit intelectual es grave. La escuela se niega a seguir admitiendo a Guido.</p>
@@ -602,7 +623,9 @@
 
                     <p>Guido se erige como justiciero: reclama la vuelta del padre, y al mismo tiempo acusa a su madre de haberlo envenenado. Le explico que eso no es verdad.</p>
 
-                    <p>—Sé que tu papá tenía una enfermedad. El falso papá enfermo está muerto. El verdadero está en tu corazón.</p>
+                    <div class="dialogue">
+                        <p>—Sé que tu papá tenía una enfermedad. El falso papá enfermo está muerto. El verdadero está en tu corazón.</p>
+                    </div>
 
                     <p>Al cabo del segundo año de cura, el niño hace una doble confesión:</p>
                     <p>—No quiero más a mi papá, porque no vuelve más.</p>
@@ -617,6 +640,7 @@
                 id: "parte2_cap7",
                 title: "Capítulo 7: Mireya",
                 content: `
+                    <span class="page-marker">Capítulo 7</span>
                     <h2 class="chapter-title">Capítulo 7: Mireya y su pregunta</h2>
                     
                     <p>I. Me propongo examirar aquí detalladamente cierto tipo de discurso en una niña que, en la pregunta que plantea, solo puede plantear la pregunta de otro, en este caso la del padre.</p>
@@ -634,6 +658,7 @@
                 id: "conclusiones",
                 title: "Conclusiones",
                 content: `
+                    <span class="page-marker">Conclusiones</span>
                     <h2 class="chapter-title">Conclusiones</h2>
                     
                     <p>En el prefacio que escribió para <em>Wayward Youth</em> de Aichhorn (1), S. Freud admite que la investigación psicoanalítica se desplazó del estudio del neurótico hacia el estudio de los niños. Y agrega: "El análisis mostró de qué manera el niño vive, sin cambiar, en el hombre enfermo tanto como en el soñador o en el artista".</p>
@@ -649,6 +674,7 @@
                 id: "apendices",
                 title: "Apéndices",
                 content: `
+                    <span class="page-marker">Apéndices</span>
                     <h2 class="chapter-title">Apéndices</h2>
                     
                     <h3>I. La debilidad mental cuestionada</h3>
