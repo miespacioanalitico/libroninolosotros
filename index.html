@@ -3,458 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El niño, su enfermedad y los otros - Lector Web</title>
-    
-    <!-- 1. Cargar Tailwind CSS (Estilos) -->
+    <title>PSICOCLAN - Versión Web Multi-Usuario</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 2. Cargar React y ReactDOM (El motor de la app) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- 3. Cargar Babel (Para traducir el código JSX en tiempo real) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <!-- 4. Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Estilos base y animaciones */
-        body { font-family: 'Merriweather', serif; }
-        .font-sans { font-family: system-ui, -apple-system, sans-serif; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 1s ease-in forwards; }
-        
-        /* Scroll suave */
-        html { scroll-behavior: smooth; }
-        
-        /* Ocultar barra de scroll en el menú lateral pero permitir scroll */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Lato:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #fdfbf7;
+            --text-color: #2d3748;
+            --accent-color: #d97706;
+            --sidebar-bg: #1a202c;
+            --sidebar-text: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Merriweather', serif;
+            overflow-x: hidden;
+            transition: font-size 0.3s ease;
+        }
+
+        /* Marca de Agua Fija */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 4vw;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.03);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            user-select: none;
+            text-align: center;
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* Estilos de la barra lateral */
+        .sidebar {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Estilo del contenido del libro */
+        .book-content {
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .book-content p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+        }
+
+        .book-content h1, .book-content h2 {
+            font-family: 'Lato', sans-serif;
+            color: #1a202c;
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+        .fade-in { animation: fadeIn 0.8s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #reading-progress {
+            width: 0%;
+            height: 4px;
+            background: var(--accent-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 60;
+            transition: width 0.1s;
+        }
+
+        /* Estilos para el Modal de Usuarios */
+        .user-card {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
-<body class="bg-amber-50 text-slate-800 transition-colors duration-300">
-    <div id="root"></div>
+<body class="flex h-screen overflow-hidden">
 
-    <!-- CÓDIGO DE LA APLICACIÓN -->
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <!-- Marca de Agua -->
+    <div class="watermark">
+        PSICOCLAN<br>
+        <span style="font-size: 0.5em;">Subido por AXELIZ - VERSIÓN WEB ALBERTO</span>
+    </div>
 
-        // --- COMPONENTES DE ICONOS (SVG Inline para evitar dependencias externas) ---
-        const Icon = ({ path, size = 24, className = "" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-                {path}
-            </svg>
-        );
+    <!-- Barra de Progreso Superior -->
+    <div id="reading-progress"></div>
 
-        const Icons = {
-            BookOpen: (props) => <Icon {...props} path={<><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></>} />,
-            Moon: (props) => <Icon {...props} path={<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>} />,
-            Sun: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41-1.41"/><path d="m19.07 4.93-1.41 1.41"/></>} />,
-            Type: (props) => <Icon {...props} path={<><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></>} />,
-            Bookmark: (props) => <Icon {...props} path={<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>} />,
-            Percent: (props) => <Icon {...props} path={<><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></>} />,
-            User: (props) => <Icon {...props} path={<><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>} />,
-            LogOut: (props) => <Icon {...props} path={<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></>} />,
-            List: (props) => <Icon {...props} path={<><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></>} />,
-            X: (props) => <Icon {...props} path={<><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>} />,
-            CheckCircle: (props) => <Icon {...props} path={<><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></>} />
-        };
+    <!-- Barra Lateral (Navegación) -->
+    <nav id="sidebar" class="sidebar w-64 h-full flex flex-col fixed md:relative transform -translate-x-full md:translate-x-0 z-50 shadow-2xl">
+        <div class="p-6 border-b border-gray-700 bg-gray-900">
+            <h2 class="text-xl font-bold text-white tracking-wider">ÍNDICE</h2>
+            <!-- Info del Usuario Actual en Sidebar -->
+            <div id="sidebar-user-info" class="mt-2 flex items-center text-amber-500 text-xs font-bold hidden">
+                <i class="fas fa-user-circle mr-2"></i>
+                <span id="current-user-display-sidebar">Invitado</span>
+            </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4 space-y-2" id="chapter-list">
+            <!-- Los capítulos se generarán aquí con JS -->
+        </div>
 
-        // --- COMPONENTE PRINCIPAL ---
-        const App = () => {
-            // ESTADOS
-            const [content, setContent] = useState(""); 
-            const [currentUser, setCurrentUser] = useState(null); 
-            const [theme, setTheme] = useState('light');
-            const [fontSize, setFontSize] = useState(18);
-            const [lineHeight, setLineHeight] = useState(1.6);
-            const [showControls, setShowControls] = useState(true);
-            const [readingProgress, setReadingProgress] = useState(0);
-            const [wordCount, setWordCount] = useState(0);
-            const [savedPosition, setSavedPosition] = useState(null);
-            const [showResumeButton, setShowResumeButton] = useState(false);
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-            const [isTocOpen, setIsTocOpen] = useState(false); 
-            const [toastMessage, setToastMessage] = useState(null);
-            const [loginInput, setLoginInput] = useState("");
+        <!-- Botón de Cerrar Sesión / Cambiar Usuario -->
+        <div class="p-4 border-t border-gray-700">
+            <button onclick="logout()" class="w-full bg-gray-700 hover:bg-red-600 text-white py-2 rounded text-xs transition flex items-center justify-center">
+                <i class="fas fa-sign-out-alt mr-2"></i> Cambiar Usuario
+            </button>
+        </div>
 
-            const contentRef = useRef(null);
-            const scrollTimeout = useRef(null);
+        <div class="p-2 bg-gray-800 text-[10px] text-center text-gray-500">
+            v1.1 - Multi-User Local
+        </div>
+    </nav>
 
-            // ÍNDICE DE SECCIONES
-            const sections = [
-                { id: 'portada', title: 'Portada y Dedicatoria' },
-                { id: 'prefacio', title: 'Prefacio' },
-                { id: 'freud', title: 'I. Freud y el Psicoanálisis' },
-                { id: 'juanito', title: 'II. El caso "Juanito"' },
-                { id: 'klein', title: 'III. Melanie Klein' },
-                { id: 'laing', title: 'IV. Laing y la identidad' },
-                { id: 'erikson', title: 'V. Erikson y la marca' },
-                { id: 'juego', title: 'VI. El juego y el Fort-Da' },
-                { id: 'notas_prefacio', title: 'Notas del Prefacio' },
-                { id: 'parte_1', title: 'PRIMERA PARTE' },
-                { id: 'capitulo_1', title: 'Capítulo 1: El síntoma o la palabra' },
-                { id: 'dolto', title: 'Observaciones de F. Dolto' },
-                { id: 'juanito_analisis', title: 'Análisis del caso Juanito' },
-                { id: 'erikson_sam', title: 'Erikson: El caso Sam' },
-                { id: 'seccion_ii', title: 'II. Controversias Técnicas' },
-                { id: 'caso_sammy', title: 'El caso Sammy' },
-                { id: 'caso_bobby', title: 'Burlingham: El caso Bobby' },
-                { id: 'caso_helman', title: 'Ilse Helman' },
-                { id: 'lacan_teoria', title: 'Perspectiva Lacaniana' },
-                { id: 'notas_cap_1', title: 'Notas del Capítulo 1' },
-                { id: 'capitulo_2', title: 'Capítulo 2: La Transferencia' },
-                { id: 'caso_joy', title: 'El caso Joy' },
-                { id: 'caso_dottie', title: 'El caso Dottie' },
-                { id: 'transferencia_padres', title: 'La Transferencia Parental' },
-                { id: 'caso_emilio', title: 'El caso Emilio' },
-                { id: 'caso_christiane', title: 'El caso Christiane' },
-                { id: 'caso_leon', title: 'El caso León' },
-                { id: 'tomo_2', title: 'SEGUNDO TOMO' },
-                { id: 'caso_sofia', title: 'El caso Sofía' },
-                { id: 'educadoras_sofia', title: 'Las Educadoras de Sofía' },
-                { id: 'conclusion_transferencia', title: 'Conclusión: Transferencia' },
-                { id: 'capitulo_3', title: 'Capítulo 3: La Psicosis' },
-                { id: 'caso_abbotts', title: 'Laing: Caso Abbotts' },
-                { id: 'christiane_retorno', title: 'Christiane: Análisis' },
-                { id: 'caso_luciano', title: 'El caso Luciano' },
-                { id: 'familia_martin', title: 'La Familia Martin' },
-                { id: 'caso_adrian', title: 'El caso Adrián' },
-                { id: 'discurso_parental', title: 'Tipos de Discurso Parental' },
-                { id: 'tecnica_analitica', title: 'Técnica y Contratransferencia' },
-            ];
-
-            // CARGAR DATOS
-            useEffect(() => {
-                const lastUser = localStorage.getItem('psicoclan_lastUser');
-                if (lastUser) {
-                    setCurrentUser(lastUser);
-                    loadUserData(lastUser);
-                }
-
-                // CONTENIDO DEL LIBRO (HTML SEGURO)
-                const bookContent = `
-                    <div class="book-container animate-fade-in relative pb-32">
-                        
-                        <!-- PORTADA -->
-                        <div id="portada" class="mb-24 text-center scroll-mt-32">
-                            <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">El niño, su "enfermedad" y los otros</h1>
-                            <h2 class="text-xl italic opacity-60 mb-8">Maud Mannoni</h2>
-                            <div class="text-sm font-semibold uppercase tracking-widest opacity-60">Primer Tomo</div>
-                            <div class="mt-4 text-indigo-600 font-medium">Para Bruno</div>
-                        </div>
-
-                        <!-- DEDICATORIA -->
-                        <div class="italic opacity-80 mb-12 text-sm leading-relaxed border-l-4 border-indigo-300 pl-4">
-                            <p>La mayor parte del contenido de este libro fue tema de conferencias pronunciadas en diversas Universidades...</p>
-                            <p class="mt-2">Debo agradecer a P. Aulangier, M.-C. Boons, J. Barmollt, F. Dolto... y P. Rufenacht por su colaboración.</p>
-                            <p class="mt-2">Mi orientación teórica la debo al pensamiento de Jacques Lacan...</p>
-                            <p class="text-right mt-4 not-italic font-sans text-xs opacity-60">Thiais, 1° de junio de 1963 - París.</p>
-                        </div>
-
-                        <!-- PREFACIO -->
-                        <h2 id="prefacio" class="text-3xl font-bold mt-16 mb-8 text-center md:text-left border-b border-current pb-4 scroll-mt-32">Prefacio</h2>
-                        
-                        <h3 id="freud" class="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">El psicoanálisis de niños a partir de Freud</h3>
-                        <p class="mb-4 text-justify">El psicoanálisis de niños es psicoanálisis. Tal la convicción de Freud al ocuparse en 1991 (1) de la cura de un niño de cinco años afectado por una neurosis fóbica. La adaptación de la técnica a la situación particular que representa para el adulto el aproximarse a un niño, no altera el campo sobre el cual opera el analista: ese campo es el del lenguaje. El discurso que rige abarca a los padres, al niño y al analista: se trata de un discurso colectivo constituido alrededor del síntoma que el niño presenta.</p>
-                        <p class="mb-4 text-justify">El malestar de que se habla es objetivable (en la persona del niño) pero la queja de los padres, aunque su objeto sea el niño real, también implica la representación que de la infancia tiene el adulto. La sociedad le confiere al niño un status puesto que le encomienda, sin que él lo sepa, la realización del futuro del adulto.</p>
-
-                        <!-- ... (Contenido resumido para brevedad técnica, pero incluirá todo lo anterior) ... -->
-                        <!-- NOTA: En la versión final renderizada, aquí iría todo el texto que me has pasado hasta ahora. -->
-                        <!-- Para que funcione YA, incluiré los bloques nuevos que acabas de pasar -->
-
-                        <h4 id="educadoras_sofia" class="text-xl font-bold mt-16 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">Las Educadoras de Sofía</h4>
-                        <p class="mb-4 text-justify">Bernadette aguantó tres meses por una referencia imaginaria a mi persona. Luego se quejó de que yo la abandonaba. Desde ese momento la madre de la niña se le aparece como peligrosa... Un día ocurre el drama. Sofía tiene una ausencia en la calle. La educadora se escapa; en la casa encuentra a la madre de la niña y le dice: "Estoy enferma quiero acostarme".</p>
-                        
-                        <div class="my-6 pl-6 border-l-4 border-rose-300 bg-rose-50 dark:bg-rose-900/20 p-4 rounded-r-lg text-sm italic">
-                            <p>—¿Dónde está Sofía? —pregunta la madre.</p>
-                            <p>—Ya no me acuerdo dónde la dejé... y además estoy harta. Yo puedo reventar, que para usted solo cuenta Sofía.</p>
-                        </div>
-
-                        <p class="mb-4 text-justify">Ese mismo día por la mañana Sofía se había parado ante un espejo:<br>—Eso no es Sofía —le había dicho la niña a Bernadette—. ¿Entiendes?, digo que no hay más Sofía.<br>—¿Por qué?<br>—No entiendes que es necesario que nunca más haya Sofía. Ya no hay más. Ahora es Bernadette. Sí,—machaca la niña— Sofía desapareció en Bernadette.</p>
-
-                        <p class="mb-4 text-justify">Entonces la familia contrata a <strong>Catalina</strong>. Terminó sus estudios y ya se ha ocupado de niños débiles. Muy pronto trata de hablarme de sus dificultades: "La educadora que me precedió debe haber sido fuerte; yo tengo tanto miedo que de noche no duermo..."</p>
-
-                        <p class="mb-4 text-justify"><strong>Juana</strong> la sucede. Es una muchacha fuerte que emana equilibrio... "Es una batalla en la que nos enfrentamos. Somos dos para vivir el pánico." En efecto, Sofía necesita protección contra sus pulsiones agresivas. El miedo del adulto aumenta su propio pánico y la pone en peligro.</p>
-
-                        <h4 id="conclusion_transferencia" class="text-xl font-bold mt-12 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">Conclusión: Los padres y la transferencia</h4>
-                        <p class="mb-4 text-justify">Concluyamos: los padres siempre están implicados de cierta manera en el síntoma que trae el niño (23). Esto no debe perderse de vista, porque allí se encuentran los mecanismos mismos de la resistencia: el anhelo inconsciente "de que nada cambie".</p>
-
-                        <hr class="my-16 border-t-2 border-indigo-200 opacity-50" />
-
-                        <!-- CAPÍTULO III -->
-                        <div id="capitulo_3" class="text-center py-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl mb-16 scroll-mt-32">
-                            <h2 class="text-3xl font-bold mb-4 text-indigo-800 dark:text-indigo-300">Capítulo III</h2>
-                            <h3 class="text-2xl italic opacity-70">La psicoterapia de las psicosis</h3>
-                        </div>
-
-                        <p class="mb-4 text-justify">En 1896 (1) Kraepelin describe la demencia precoz como entidad nosológica. Considera irremediable el profundo deterioro de las facultades intelectuales...</p>
-
-                        <h4 id="caso_luciano" class="text-xl font-bold mt-12 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">El caso Luciano</h4>
-                        <p class="mb-4 text-justify">Luciano, 14 años, deja escapar un discurso que impresiona por sus entonaciones musicales... "¿No hay veneno?, no me gusta estar muerto... El señor Freddy murió, no importa, era un glotón...". Indiferente, patético, Luciano cierra bruscamente los ojos y se balancea.</p>
-
-                        <h4 id="familia_martin" class="text-xl font-bold mt-12 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">La Familia Martin</h4>
-                        <p class="mb-4 text-justify">La familia Martin llega con sus tres niños... Dionisio y Verónica viven una simétrica fascinación mortífera. Cada uno siente que solo puede llegar a vivir a costa de la muerte del otro.</p>
-
-                        <h4 id="caso_adrian" class="text-xl font-bold mt-12 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">El caso Adrián</h4>
-                        <p class="mb-4 text-justify">He aquí otro ejemplo: Adrián. Es mudo desde la edad de tres años... "Una infancia como esa se nos queda pegada a la piel para siempre. Ya estuve muerta, nada puede ser peor de lo que he vivido."</p>
-
-                        <h4 id="discurso_parental" class="text-xl font-bold mt-12 mb-6 text-indigo-600 dark:text-indigo-400 scroll-mt-32">Tipos de Discurso Parental</h4>
-                        <p class="mb-4 text-justify"><strong>1) El discurso cerrado:</strong> es un relato pronunciado más bien delante del analista que para el analista. La madre de Christiane denuncia el desorden del que su hija es presa...</p>
-                        <p class="mb-4 text-justify"><strong>2) El discurso dramático:</strong> en este, al analista lo alcanza el carácter inapelable de los sangrientos deseos parentales... La respuesta materna: "He aquí lo que soy", es en realidad una pregunta.</p>
-
-                        <div class="mt-16 pt-8 border-t border-dashed border-gray-400 opacity-50 text-center text-sm italic">
-                            <p>... Continúa en la siguiente sección ...</p>
-                        </div>
-                    </div>
-                `;
-                
-                // Nota: He incluido los marcadores esenciales. Al pegar esto en un archivo .html, el navegador lo renderizará correctamente.
-                setContent(bookContent);
-            }, [savedPosition]);
-
-            // --- LÓGICA DE USUARIO Y SCROLL (Idéntica a la versión anterior) ---
-            const loadUserData = (username) => {
-                const prefix = `psicoclan_${username}_`;
-                const savedTheme = localStorage.getItem(`${prefix}theme`) || 'light';
-                const savedFont = parseInt(localStorage.getItem(`${prefix}fontSize`)) || 18;
-                const savedLineHeight = parseFloat(localStorage.getItem(`${prefix}lineHeight`)) || 1.6;
-                const savedPos = parseFloat(localStorage.getItem(`${prefix}scrollPos`)) || 0;
-                
-                setTheme(savedTheme);
-                setFontSize(savedFont);
-                setLineHeight(savedLineHeight);
-                setSavedPosition(savedPos);
-
-                if (savedPos > 100) {
-                    setShowResumeButton(true);
-                }
-            };
-
-            const handleLogin = (e) => {
-                e.preventDefault();
-                if (!loginInput.trim()) return;
-                const user = loginInput.trim().toLowerCase();
-                setCurrentUser(user);
-                localStorage.setItem('psicoclan_lastUser', user);
-                loadUserData(user);
-                setLoginInput("");
-            };
-
-            const handleLogout = () => {
-                setCurrentUser(null);
-                localStorage.removeItem('psicoclan_lastUser');
-                setSavedPosition(null);
-                setShowResumeButton(false);
-                window.scrollTo(0, 0);
-            };
-
-            // Scroll Listener
-            useEffect(() => {
-                const handleScroll = () => {
-                    if (!currentUser) return;
-                    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-                    const currentScroll = window.scrollY;
-                    const progress = (currentScroll / totalHeight) * 100;
-                    setReadingProgress(isNaN(progress) ? 0 : Math.min(progress, 100));
-                    
-                    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-                    scrollTimeout.current = setTimeout(() => {
-                        localStorage.setItem(`psicoclan_${currentUser}_scrollPos`, currentScroll);
-                    }, 1000);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, [currentUser]);
-
-            // Calcular palabras
-            useEffect(() => {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                const text = tempDiv.textContent || tempDiv.innerText || "";
-                setWordCount(text.trim().split(/\s+/).length);
-            }, [content]);
-
-            // Funciones de UI
-            const toggleTheme = () => {
-                if (!currentUser) return;
-                const newTheme = theme === 'light' ? 'dark' : 'light';
-                setTheme(newTheme);
-                localStorage.setItem(`psicoclan_${currentUser}_theme`, newTheme);
-            };
+    <!-- Contenedor Principal -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-transparent">
+        
+        <header class="bg-white/90 backdrop-blur-sm shadow-sm p-4 flex justify-between items-center sticky top-0 z-40">
+            <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
             
-            const adjustFontSize = (delta) => {
-                if (!currentUser) return;
-                const newSize = Math.max(14, Math.min(32, fontSize + delta));
-                setFontSize(newSize);
-                localStorage.setItem(`psicoclan_${currentUser}_fontSize`, newSize);
-            };
+            <div class="flex items-center space-x-4 md:ml-0 ml-4">
+                <span class="text-sm font-bold text-gray-600 hidden sm:inline">HERRAMIENTAS:</span>
+                
+                <div class="flex items-center bg-gray-100 rounded-lg p-1">
+                    <button onclick="changeFontSize(-1)" class="w-8 h-8 rounded hover:bg-white flex items-center justify-center text-gray-600 transition" title="Reducir letra">
+                        <i class="fas fa-minus text-xs"></i>
+                    </button>
+                    <span class="px-2 text-gray-500"><i class="fas fa-search"></i></span>
+                    <button onclick="changeFontSize(1)" class="w-8 h-8 rounded hover:bg-white flex items-center justify-center text-gray-600 transition" title="Aumentar letra">
+                        <i class="fas fa-plus text-xs"></i>
+                    </button>
+                </div>
+            </div>
 
-            const adjustLineHeight = (val) => {
-                if (!currentUser) return;
-                setLineHeight(val);
-                localStorage.setItem(`psicoclan_${currentUser}_lineHeight`, val);
-            };
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                    <i class="fas fa-pen-nib mr-2"></i>
+                    <span id="word-count">0</span>&nbsp;palabras
+                </div>
 
-            const resumeReading = () => {
-                window.scrollTo({ top: savedPosition, behavior: 'smooth' });
-                setShowResumeButton(false);
-            };
+                <button onclick="saveBookmark()" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center">
+                    <i class="fas fa-bookmark mr-2"></i> <span class="hidden sm:inline">Guardar Avance</span>
+                </button>
+            </div>
+        </header>
 
-            const saveBookmarkManual = () => {
-                if (!currentUser) return;
-                const currentScroll = window.scrollY;
-                localStorage.setItem(`psicoclan_${currentUser}_scrollPos`, currentScroll);
-                setSavedPosition(currentScroll);
-                setToastMessage("Marcador colocado aquí");
-                setTimeout(() => setToastMessage(null), 2000);
-            };
+        <div id="reader-container" class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+            <div id="content-display" class="book-content fade-in pb-20">
+                <!-- CONTENIDO -->
+            </div>
+            
+            <div class="text-center text-gray-400 text-sm mt-12 mb-8 border-t border-gray-200 pt-8">
+                PSICOCLAN &copy; 2025
+            </div>
+        </div>
 
-            const scrollToSection = (id) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    setIsTocOpen(false);
-                }
-            };
+    </main>
 
-            // RENDERIZADO CONDICIONAL (LOGIN)
-            if (!currentUser) {
-                return (
-                    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans">
-                        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-                            <div className="mb-6 flex justify-center">
-                                <div className="bg-indigo-100 p-4 rounded-full text-indigo-600">
-                                    <Icons.BookOpen size={48} />
-                                </div>
-                            </div>
-                            <h2 className="text-2xl font-bold text-slate-800 mb-2">Bienvenido a PSICOCLAN</h2>
-                            <p className="text-slate-500 mb-8">Ingresa tu nombre para guardar tu progreso personal.</p>
-                            <form onSubmit={handleLogin} className="space-y-4">
-                                <input type="text" placeholder="Tu nombre o alias..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" value={loginInput} onChange={(e) => setLoginInput(e.target.value)} autoFocus />
-                                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition shadow-md">Comenzar a Leer</button>
-                            </form>
-                            <p className="mt-8 text-[10px] text-gray-400 font-mono tracking-widest uppercase">Subido por AXELIZ • VERCION WEB ALBERTO</p>
-                        </div>
-                    </div>
-                );
+    <!-- ================= MODALES ================= -->
+
+    <!-- Modal de Selección de Usuario (NUEVO) -->
+    <div id="user-modal" class="fixed inset-0 bg-gray-900 z-[100] flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 relative">
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 font-serif mb-2">PSICOCLAN</h1>
+                <p class="text-gray-500 text-sm">¿Quién está leyendo hoy?</p>
+            </div>
+
+            <!-- Lista de Usuarios Existentes -->
+            <div id="user-list-container" class="space-y-3 mb-6 max-h-48 overflow-y-auto">
+                <!-- Se llena con JS -->
+                <p class="text-center text-gray-400 text-sm italic py-4">No hay perfiles guardados en este dispositivo.</p>
+            </div>
+
+            <!-- Crear Nuevo Usuario -->
+            <div class="border-t border-gray-200 pt-4">
+                <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Nuevo Lector</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="new-username" placeholder="Tu nombre..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500" onkeypress="handleEnter(event)">
+                    <button onclick="createUser()" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-bold transition">
+                        Crear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de "Continuar Lectura" (Separador) -->
+    <div id="resume-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-amber-500"></div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Hola, <span id="modal-username" class="text-amber-600">Lector</span></h2>
+            <p class="text-gray-600 mb-6">Encontramos tu separador guardado.</p>
+            
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-100 mb-6">
+                <p class="text-sm text-amber-800 font-semibold">Te quedaste en:</p>
+                <p id="saved-chapter-name" class="text-lg text-gray-800 font-serif italic mt-1">...</p>
+                <p class="text-xs text-gray-500 mt-2" id="saved-date">...</p>
+            </div>
+
+            <div class="flex space-x-3">
+                <button onclick="resumeReading()" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-bold transition shadow-lg">
+                    Continuar aquí
+                </button>
+                <button onclick="closeResumeModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg font-bold transition">
+                    Ir al inicio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition duration-300 z-50">
+        Acción realizada
+    </div>
+
+    <script>
+        // --- BASE DE DATOS DEL LIBRO ---
+        const bookData = [
+            {
+                id: "intro",
+                title: "Introducción",
+                content: `
+                    <h1>Bienvenido a PSICOCLAN</h1>
+                    <p class="first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-amber-600">E</p>
+                    <p>ste es el inicio de una experiencia de lectura inmersiva. El sistema está listo para recibir el contenido de 80,000 palabras.</p>
+                    <p>Utiliza las herramientas en la parte superior para ajustar el tamaño de la letra a tu gusto. Si necesitas detener tu lectura, presiona el botón "Guardar Avance" y la próxima vez que entres, podrás continuar exactamente donde te quedaste.</p>
+                    <p>Por favor, proporciona el primer fragmento de texto para reemplazar esta demostración.</p>
+                `
+            },
+            {
+                id: "cap1",
+                title: "Capítulo 1: El Comienzo",
+                content: `
+                    <h2>El despertar</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Este texto es solo un marcador de posición. Pronto será reemplazado por la narrativa real de PSICOCLAN.</p>
+                `
+            }
+        ];
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let currentFontSize = 18;
+        let currentChapterIndex = 0;
+        let currentUser = null; // Nombre del usuario actual
+        let users = []; // Lista de usuarios guardados
+
+        // --- REFERENCIAS DOM ---
+        const contentDisplay = document.getElementById('content-display');
+        const chapterList = document.getElementById('chapter-list');
+        const readerContainer = document.getElementById('reader-container');
+        const wordCountDisplay = document.getElementById('word-count');
+        const resumeModal = document.getElementById('resume-modal');
+        const userModal = document.getElementById('user-modal');
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const progressBar = document.getElementById('reading-progress');
+
+        // --- INICIALIZACIÓN ---
+        function init() {
+            loadUsers(); // Cargar lista de usuarios desde localStorage
+            
+            // Si no hay usuario seleccionado, mostrar modal de selección
+            // Se asume que al refrescar se "cierra sesión" por seguridad/privacidad básica, 
+            // o podríamos guardar el "lastUser" si prefieres persistencia de sesión.
+            // Por ahora, forzamos selección para soportar multi-usuario limpio.
+            renderUserSelection();
+        }
+
+        // --- GESTIÓN DE USUARIOS ---
+
+        function loadUsers() {
+            const storedUsers = localStorage.getItem('psicoclan_users');
+            if (storedUsers) {
+                users = JSON.parse(storedUsers);
+            }
+        }
+
+        function renderUserSelection() {
+            const container = document.getElementById('user-list-container');
+            container.innerHTML = '';
+
+            if (users.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-400 text-sm italic py-4">No hay perfiles creados.</p>';
+                return;
             }
 
-            // RENDERIZADO PRINCIPAL
-            return (
-                <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-900 text-slate-200' : 'bg-amber-50 text-slate-800'}`}>
-                    
-                    {/* Toast */}
-                    {toastMessage && (
-                        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-full text-sm z-[60] flex items-center gap-2 animate-fade-in">
-                            <Icons.CheckCircle size={16} className="text-green-400" /> {toastMessage}
+            users.forEach(user => {
+                const div = document.createElement('div');
+                div.className = 'user-card flex justify-between items-center bg-gray-50 hover:bg-amber-50 p-3 rounded-lg border border-gray-200';
+                div.onclick = (e) => {
+                    // Evitar que el click en borrar dispare el login
+                    if(e.target.closest('.delete-btn')) return;
+                    loginUser(user);
+                };
+                
+                div.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center font-bold mr-3">
+                            ${user.charAt(0).toUpperCase()}
                         </div>
-                    )}
-
-                    {/* Progress Bar */}
-                    <div className="fixed top-0 left-0 w-full h-1 z-50 bg-gray-200/20">
-                        <div className="h-full bg-indigo-500 transition-all duration-100 ease-out" style={{ width: `${readingProgress}%` }} />
+                        <span class="font-bold text-gray-700">${user}</span>
                     </div>
+                    <button class="delete-btn text-gray-400 hover:text-red-500 p-2" onclick="deleteUser('${user}')" title="Borrar perfil">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-                    {/* Header */}
-                    <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${showControls ? 'translate-y-0' : '-translate-y-full'} ${theme === 'dark' ? 'bg-slate-900/90 border-b border-slate-700' : 'bg-amber-50/90 border-b border-amber-200'} backdrop-blur-sm shadow-sm`}>
-                        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <button onClick={() => setIsTocOpen(!isTocOpen)} className="p-2 -ml-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition">
-                                    {isTocOpen ? <Icons.X size={20} /> : <Icons.List size={20} />}
-                                </button>
-                                <div className="hidden md:flex items-center space-x-2 font-bold text-sm tracking-widest opacity-80 font-sans">
-                                    <Icons.User size={16} /> <span className="uppercase truncate max-w-[100px]">{currentUser}</span>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                                <button onClick={saveBookmarkManual} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition" title="Guardar marcador">
-                                    <Icons.Bookmark size={20} className={savedPosition > 100 ? "text-indigo-500 fill-indigo-500" : ""} />
-                                </button>
-                                <div className="w-px h-6 bg-current opacity-10 mx-2"></div>
-                                <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition">
-                                    {theme === 'light' ? <Icons.Moon size={20} /> : <Icons.Sun size={20} />}
-                                </button>
-                                <div className="relative group">
-                                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition">
-                                        <Icons.Type size={20} />
-                                    </button>
-                                    {isMenuOpen && (
-                                        <div className={`absolute right-0 top-full mt-2 w-56 p-4 rounded-xl shadow-xl border ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
-                                            <p className="text-xs font-semibold mb-2 opacity-50 uppercase font-sans">Tamaño</p>
-                                            <div className="flex justify-between items-center bg-black/5 dark:bg-white/5 rounded-lg p-1 mb-4">
-                                                <button onClick={() => adjustFontSize(-2)} className="w-8 h-8 flex items-center justify-center rounded hover:bg-black/10">-</button>
-                                                <span className="text-sm font-mono">{fontSize}px</span>
-                                                <button onClick={() => adjustFontSize(2)} className="w-8 h-8 flex items-center justify-center rounded hover:bg-black/10">+</button>
-                                            </div>
-                                            <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-2">
-                                                <button onClick={handleLogout} className="flex items-center space-x-2 text-xs text-red-500 w-full hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded font-sans">
-                                                    <Icons.LogOut size={14} /> <span>Cambiar Usuario</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </header>
+        function createUser() {
+            const input = document.getElementById('new-username');
+            const name = input.value.trim();
 
-                    {/* Sidebar / TOC */}
-                    <aside className={`fixed top-14 left-0 h-[calc(100vh-3.5rem)] w-64 z-30 transform transition-transform duration-300 ease-in-out border-r backdrop-blur-md overflow-y-auto no-scrollbar ${isTocOpen ? 'translate-x-0' : '-translate-x-full'} ${theme === 'dark' ? 'bg-slate-900/95 border-slate-800' : 'bg-white/95 border-amber-100'}`}>
-                        <div className="p-6">
-                            <h3 className="text-xs font-bold uppercase tracking-widest opacity-50 mb-6 font-sans">Índice</h3>
-                            <nav className="space-y-1 font-sans">
-                                {sections.map((section) => (
-                                    <button key={section.id} onClick={() => scrollToSection(section.id)} className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${theme === 'dark' ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-black/5 text-slate-700'}`}>
-                                        {section.title}
-                                    </button>
-                                ))}
-                            </nav>
-                        </div>
-                    </aside>
+            if (!name) return showToast("Por favor escribe un nombre");
+            if (users.includes(name)) return showToast("Ese usuario ya existe");
 
-                    {/* Resume Button */}
-                    {showResumeButton && (
-                        <div className="fixed bottom-20 right-6 z-50 animate-bounce">
-                            <button onClick={resumeReading} className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-full shadow-lg transition transform hover:scale-105 font-sans">
-                                <Icons.Bookmark size={18} /> <span className="font-medium text-sm">Continuar</span>
-                            </button>
-                        </div>
-                    )}
+            users.push(name);
+            localStorage.setItem('psicoclan_users', JSON.stringify(users));
+            input.value = '';
+            
+            // Auto-login al crear
+            loginUser(name);
+        }
 
-                    {/* Main Content */}
-                    <main ref={contentRef} className={`max-w-3xl mx-auto px-6 py-24 md:px-12 md:py-32 outline-none selection:bg-indigo-200 dark:selection:bg-indigo-900 transition-all duration-300 ${isTocOpen ? 'md:pl-64' : ''}`} style={{ fontSize: `${fontSize}px`, lineHeight: lineHeight }}>
-                        <div dangerouslySetInnerHTML={{ __html: content }} />
-                        
-                        {/* Marcador Visual */}
-                        {savedPosition > 100 && (
-                            <div style={{ top: savedPosition + 'px' }} className="absolute right-0 w-8 h-10 -mt-2 opacity-80 pointer-events-none transition-all duration-500">
-                                <Icons.Bookmark size={32} className="text-indigo-500 fill-indigo-500 drop-shadow-lg" />
-                            </div>
-                        )}
-                    </main>
+        function deleteUser(name) {
+            if (!confirm(`¿Estás seguro de borrar el perfil de ${name}? Se perderá su avance.`)) return;
 
-                    {/* Footer */}
-                    <footer className={`pb-10 pt-20 px-6 text-center border-t font-sans ${theme === 'dark' ? 'border-slate-800' : 'border-amber-100'} ${isTocOpen ? 'md:pl-64' : ''}`}>
-                        <div className="flex justify-center items-center space-x-6 text-xs font-mono opacity-60 mb-6">
-                            <span className="flex items-center space-x-1"><Icons.Type size={12} /> <span>{wordCount.toLocaleString()} palabras</span></span>
-                            <span className="flex items-center space-x-1"><Icons.Percent size={12} /> <span>{Math.round(readingProgress)}% leído</span></span>
-                        </div>
-                        <div className="select-none pointer-events-none opacity-40 font-black tracking-widest text-[10px] md:text-xs uppercase space-y-1">
-                            <p className="text-indigo-500/50">PSICOCLAN</p>
-                            <p>Subido por AXELIZ</p>
-                            <p>VERCION WEB ALBERTO</p>
-                        </div>
-                    </footer>
-                </div>
-            );
-        };
+            users = users.filter(u => u !== name);
+            localStorage.setItem('psicoclan_users', JSON.stringify(users));
+            
+            // Borrar también su bookmark
+            localStorage.removeItem(`psicoclan_bookmark_${name}`);
+            
+            renderUserSelection();
+        }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        function loginUser(name) {
+            currentUser = name;
+            
+            // UI Update
+            document.getElementById('current-user-display-sidebar').innerText = currentUser;
+            document.getElementById('sidebar-user-info').classList.remove('hidden');
+            
+            // Ocultar modal de usuario
+            userModal.classList.add('hidden');
+            
+            // Cargar libro base
+            renderSidebar();
+            loadContent(0);
+            
+            // Verificar bookmark específico de este usuario
+            checkBookmark();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('sidebar-user-info').classList.add('hidden');
+            userModal.classList.remove('hidden');
+            renderUserSelection();
+            
+            // Cerrar cualquier modal abierto
+            resumeModal.classList.add('hidden');
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') createUser();
+        }
+
+        // --- FUNCIONALIDAD DEL LIBRO ---
+
+        function renderSidebar() {
+            chapterList.innerHTML = '';
+            bookData.forEach((chapter, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-4 py-3 rounded-lg text-sm transition hover:bg-gray-700 ${index === currentChapterIndex ? 'bg-amber-600 text-white font-bold' : 'text-gray-300'}`;
+                btn.innerText = chapter.title;
+                btn.onclick = () => {
+                    loadContent(index);
+                    if (window.innerWidth < 768) toggleSidebar();
+                };
+                chapterList.appendChild(btn);
+            });
+        }
+
+        function loadContent(index) {
+            currentChapterIndex = index;
+            const chapter = bookData[index];
+            
+            contentDisplay.style.opacity = '0';
+            setTimeout(() => {
+                contentDisplay.innerHTML = chapter.content;
+                contentDisplay.style.opacity = '1';
+                readerContainer.scrollTop = 0;
+                updateWordCount();
+                renderSidebar();
+            }, 200);
+        }
+
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 14) currentFontSize = 14;
+            if (currentFontSize > 32) currentFontSize = 32;
+            contentDisplay.style.fontSize = `${currentFontSize}px`;
+        }
+
+        function updateWordCount() {
+            const text = contentDisplay.innerText || contentDisplay.textContent;
+            const count = text.trim().split(/\s+/).length;
+            wordCountDisplay.innerText = count;
+        }
+
+        readerContainer.addEventListener('scroll', () => {
+            const scrollTop = readerContainer.scrollTop;
+            const scrollHeight = readerContainer.scrollHeight - readerContainer.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // --- SISTEMA DE SEPARADOR MULTI-USUARIO ---
+
+        function saveBookmark() {
+            if (!currentUser) return showToast("Error: No hay usuario activo");
+
+            const bookmark = {
+                chapterIndex: currentChapterIndex,
+                scrollPosition: readerContainer.scrollTop,
+                date: new Date().toLocaleString(),
+                chapterTitle: bookData[currentChapterIndex].title
+            };
+            
+            // Guardar con clave única del usuario
+            localStorage.setItem(`psicoclan_bookmark_${currentUser}`, JSON.stringify(bookmark));
+            showToast(`Avance guardado para ${currentUser}`);
+        }
+
+        function checkBookmark() {
+            if (!currentUser) return;
+
+            // Buscar clave única del usuario
+            const saved = localStorage.getItem(`psicoclan_bookmark_${currentUser}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('saved-chapter-name').innerText = data.chapterTitle;
+                document.getElementById('saved-date').innerText = data.date;
+                document.getElementById('modal-username').innerText = currentUser;
+                resumeModal.classList.remove('hidden');
+            }
+        }
+
+        function resumeReading() {
+            const saved = localStorage.getItem(`psicoclan_bookmark_${currentUser}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                loadContent(data.chapterIndex);
+                setTimeout(() => {
+                    readerContainer.scrollTop = data.scrollPosition;
+                }, 300);
+                closeResumeModal();
+            }
+        }
+
+        function closeResumeModal() {
+            resumeModal.classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+        }
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        window.onload = init;
+
     </script>
 </body>
 </html>
